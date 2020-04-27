@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/subview_term_detail"
+    android:descendantFocusability="beforeDescendants"
+    android:focusableInTouchMode="true"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".TermDetailActivity"
+    tools:showIn="@layout/term_detail_activity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        >
+
+        <TextView
+            android:layout_width="25pt"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Term Name: "
+            android:textAlignment="textEnd"
+            android:gravity="end"
+            android:layout_marginLeft="@dimen/list_text_margin"
+            android:layout_marginRight="@dimen/detail_text_margin"
+            android:layout_marginVertical="@dimen/detail_text_margin"
+            android:textSize="@dimen/list_text_size"
+            android:textFontWeight="1000"
+            android:textColor="@color/list_text_color" />
+
+        <EditText
+            android:id="@+id/term_detail_title_text_view"
+            android:layout_width="75pt"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/hint_term_name"
+            android:layout_marginLeft="@dimen/detail_text_margin"
+            android:layout_marginRight="@dimen/list_text_margin"
+            android:layout_marginVertical="@dimen/detail_text_margin"
+            android:textSize="@dimen/detail_text_size"
+            android:textFontWeight="1000"
+            android:textColor="@color/list_text_color" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        >
+
+        <TextView
+            android:layout_width="25pt"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Start Date: "
+            android:textAlignment="textEnd"
+            android:gravity="end"
+            android:layout_marginLeft="@dimen/list_text_margin"
+            android:layout_marginRight="@dimen/detail_text_margin"
+            android:layout_marginVertical="@dimen/detail_text_margin"
+            android:textSize="@dimen/list_text_size"
+            android:textFontWeight="1000"
+            android:textColor="@color/list_text_color" />
+
+        <TextView
+            android:id="@+id/term_detail_start_text_view"
+            android:layout_width="75pt"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="showDatePickerDialog"
+            android:hint="Tap here to set the start date."
+            android:layout_marginLeft="@dimen/detail_text_margin"
+            android:layout_marginRight="@dimen/list_text_margin"
+            android:layout_marginVertical="@dimen/detail_text_margin"
+            android:textSize="@dimen/detail_text_size"
+            android:textFontWeight="1000"
+            android:textColor="@color/list_text_color" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        >
+
+        <TextView
+            android:layout_width="25pt"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="End Date: "
+            android:textAlignment="textEnd"
+            android:gravity="end"
+            android:layout_marginLeft="@dimen/list_text_margin"
+            android:layout_marginRight="@dimen/detail_text_margin"
+            android:layout_marginVertical="@dimen/detail_text_margin"
+            android:textSize="@dimen/list_text_size"
+            android:textFontWeight="1000"
+            android:textColor="@color/list_text_color" />
+
+        <TextView
+            android:id="@+id/term_detail_end_text_view"
+            android:layout_width="75pt"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="showDatePickerDialog"
+            android:hint="Tap here to set the end date."
+            android:layout_marginLeft="@dimen/detail_text_margin"
+            android:layout_marginRight="@dimen/list_text_margin"
+            android:layout_marginVertical="@dimen/detail_text_margin"
+            android:textSize="@dimen/detail_text_size"
+            android:textFontWeight="1000"
+            android:textColor="@color/list_text_color" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom" >
+
+
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/courses_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/button_margin"
+        android:textSize="@dimen/button_text_size"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/see_courses"
+        android:onClick="showCourseActivity"/>
+
+
+</LinearLayout>

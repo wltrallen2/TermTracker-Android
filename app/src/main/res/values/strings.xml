@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Term Tracker</string>
+    <string name="add_sample_data">Add Sample Data</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_term_detail">Term Detail</string>
+    <string name="hint_term_name">Tap here to enter term name.</string>
+    <string name="delete_all">Delete All Terms</string>
+    <string name="new_term">New Term</string>
+    <string name="edit_term">Edit Term Details</string>
+    <string name="delete_term">Delete Term</string>
+    <string name="see_courses">See/Edit Courses</string>
+    <string name="course_list">Course List</string>
+    <string name="enter_course_name">Enter Course Name</string>
+    <string name="course_name">Course Name:</string>
+    <string name="proj_end_date">Proj. End Date:</string>
+    <string name="click_to_enter_date">Click to Enter Date</string>
+    <string name="course_status">Course Status:</string>
+    <string name="click_to_select_status">Click to Select Status</string>
+    <string name="course_mentor">Course Mentor:</string>
+    <string name="enter_mentor_name">Enter Mentor Name</string>
+    <string name="mentor_phone">Mentor Phone:</string>
+    <string name="enter_mentor_phone_number">Enter Mentor Phone Number</string>
+    <string name="mentor_email">Mentor Email</string>
+    <string name="enter_mentor_email">Enter Mentor Email</string>
+    <string name="course_detail">Course Detail</string>
+</resources>

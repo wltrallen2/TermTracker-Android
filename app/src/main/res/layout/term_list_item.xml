@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/term_name_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/list_text_margin"
+        android:text="Term Name"
+        android:textColor="@color/list_text_color"
+        android:textSize="@dimen/list_text_size"
+        app:layout_constraintStart_toEndOf="@id/termDetailFab"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/term_start_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/list_text_margin"
+        android:text="Start Date: Date"
+        android:textColor="@color/list_subtext_color"
+        android:textSize="@dimen/list_subtext_size"
+        android:textFontWeight="700"
+        app:layout_constraintTop_toBottomOf="@id/term_name_textView"
+        app:layout_constraintStart_toEndOf="@id/termDetailFab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/term_end_textView"
+        />
+
+    <TextView
+        android:id="@+id/term_end_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/list_text_margin"
+        android:layout_marginBottom="@dimen/list_text_margin"
+        android:text="End Date: Date"
+        android:textColor="@color/list_subtext_color"
+        android:textFontWeight="700"
+        android:textSize="@dimen/list_subtext_size"
+        app:layout_constraintTop_toBottomOf="@id/term_start_textView"
+        app:layout_constraintStart_toEndOf="@id/termDetailFab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/termDetailFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:backgroundTint="@color/colorPrimary"
+        android:layout_margin="@dimen/list_fab_margin"
+        app:fabSize="mini"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_edit" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
