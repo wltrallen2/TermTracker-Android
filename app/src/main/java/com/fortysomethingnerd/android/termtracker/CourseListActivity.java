@@ -81,7 +81,8 @@ public class CourseListActivity extends AppCompatActivity {
         };
 
         viewModel = this.getDefaultViewModelProviderFactory().create(CourseListViewModel.class);
-        viewModel.courses.observe(this, observer);
+        viewModel.setFilter(termId);
+        viewModel.getFilteredCourses().observe(this, observer);
     }
 
     private void setTermId() {
