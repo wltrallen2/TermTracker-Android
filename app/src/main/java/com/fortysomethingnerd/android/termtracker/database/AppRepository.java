@@ -98,4 +98,35 @@ public class AppRepository {
     public LiveData<List<CourseEntity>> getAllCoursesForTerm(int termId) {
         return mDb.courseDao().getAllCoursesForTerm(termId);
     }
+
+    public void deleteAllCoursesForTerm(int termId) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.courseDao().deleteAllCoursesInTerm(termId);
+            }
+        });
+    }
+
+    public CourseEntity getCourseById(int courseId) {
+        return mDb.courseDao().getCourseById(courseId);
+    }
+
+    public void insertCourse(CourseEntity course) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.courseDao().insertCourse(course);
+            }
+        });
+    }
+
+    public void deleteCourse(CourseEntity course) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.courseDao().deleteCourse(course);
+            }
+        });
+    }
 }

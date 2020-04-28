@@ -30,4 +30,8 @@
     <string name="mentor_email">Mentor Email</string>
     <string name="enter_mentor_email">Enter Mentor Email</string>
     <string name="course_detail">Course Detail</string>
+    <string name="delete_all_courses">Delete All Courses</string>
+    <string name="new_course">New Course</string>
+    <string name="edit_course_details">Edit Course Details</string>
+    <string name="delete_course">Delete Course</string>
 </resources>

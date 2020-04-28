@@ -46,4 +46,8 @@ public class CourseListViewModel extends AndroidViewModel {
     public void addSampleData(int termId) {
         repository.addSampleDataForCourses(termId);
     }
+
+    public void deleteAllCoursesForTerm(int termId) {
+        repository.deleteAllCoursesForTerm(termId);
+    }
 }

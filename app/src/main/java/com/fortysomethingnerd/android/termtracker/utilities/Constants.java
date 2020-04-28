@@ -2,6 +2,7 @@ package com.fortysomethingnerd.android.termtracker.utilities;
 
 public class Constants {
 
+    public static final String COURSE_ID_KEY = "course_id_key";
     public static final String DATE_FORMAT_CHAR_SEQUENCE = "EEE, MMM d, yyyy";
     public static final String EDITING_KEY = "editing_key";
     public static final String LOG_TAG = "log_tag";

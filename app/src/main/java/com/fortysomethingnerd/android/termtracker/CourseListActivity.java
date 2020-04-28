@@ -45,6 +45,7 @@ public class CourseListActivity extends AppCompatActivity {
     @OnClick(R.id.courseDetailFab)
     void courseDetailClickHandler() {
         Intent intent = new Intent(this, CourseDetailActivity.class);
+        intent.putExtra(TERM_ID_KEY, termId);
         startActivity(intent);
     }
 
@@ -62,6 +63,11 @@ public class CourseListActivity extends AppCompatActivity {
         setTermId();
         initRecyclerView();
         initViewModel();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
     }
 
     private void initViewModel() {
@@ -115,9 +121,23 @@ public class CourseListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.action_add_sample_course_data) {
             addSampleData();
+        } else if (item.getItemId() == R.id.action_delete_all_courses) {
+            deleteAllCoursesForThisTerm();
+        } else if (item.getItemId() == android.R.id.home) {
+            onBackPressed();
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    private void deleteAllCoursesForThisTerm() {
+        viewModel.deleteAllCoursesForTerm(termId);
     }
 
     private void addSampleData() {

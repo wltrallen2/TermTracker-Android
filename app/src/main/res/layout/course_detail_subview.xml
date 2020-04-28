@@ -254,7 +254,7 @@
         android:textSize="@dimen/button_text_size"
         android:textColor="@color/white"
         android:backgroundTint="@color/colorPrimary"
-        android:text="@string/see_courses"
-        android:onClick="showCourseActivity"/>
+        android:text="See/Edit Assessments"
+        android:onClick="showAssessmentActivity"/>
 
 </LinearLayout>

@@ -20,6 +20,7 @@ import com.fortysomethingnerd.android.termtracker.database.TermEntity;
 import com.fortysomethingnerd.android.termtracker.fragments.DatePickerDialogFragment;
 import com.fortysomethingnerd.android.termtracker.viewmodel.TermDetailViewModel;
 
+import java.text.ParseException;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -134,9 +135,9 @@ public class TermDetailActivity extends AppCompatActivity {
             Date start = DateConverter.parseStringToDate(startString);
             Date end = DateConverter.parseStringToDate(endString);
             mViewModel.saveTerm(termTitle, start, end);
-        } catch (Exception ex) {
-            // TODO: Handle the error in date parsing for user.
-            Log.i(LOG_TAG, "saveAndReturn: " + ex);
+        } catch (ParseException e) {
+            // TODO: Handle parse error.
+            Log.i(LOG_TAG, "TermDetailActivity.saveAndReturn: " + e);
         }
 
         finish();
@@ -145,6 +146,10 @@ public class TermDetailActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         hideKeyboard();
+        if (mViewModel.mLiveTerm != null) {
+            outState.putInt(TERM_ID_KEY, mViewModel.mLiveTerm.getValue().getId());
+        }
+
         outState.putBoolean(EDITING_KEY, true);
         outState.putString(TEMP_START_DATE, termStartTextView.getText().toString());
         outState.putString(TEMP_END_DATE, termEndTextView.getText().toString());

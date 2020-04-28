@@ -1,7 +1,9 @@
 package com.fortysomethingnerd.android.termtracker.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Layout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,14 +12,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fortysomethingnerd.android.termtracker.CourseDetailActivity;
 import com.fortysomethingnerd.android.termtracker.R;
 import com.fortysomethingnerd.android.termtracker.database.CourseEntity;
 import com.fortysomethingnerd.android.termtracker.database.DateConverter;
+import com.fortysomethingnerd.android.termtracker.utilities.Constants;
+import com.fortysomethingnerd.android.termtracker.viewmodel.CourseDetailViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.COURSE_ID_KEY;
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.LOG_TAG;
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TERM_ID_KEY;
 
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHolder> {
 
@@ -44,6 +54,16 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
         holder.courseNameTextView.setText(course.getTitle());
         holder.courseStatusTextView.setText(course.getStatus().toString());
         holder.courseEndTextView.setText(DateConverter.parseDateToString(course.getEnd()));
+
+        holder.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, CourseDetailActivity.class);
+                intent.putExtra(COURSE_ID_KEY, course.getId());
+                intent.putExtra(TERM_ID_KEY, course.getTermId());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -60,6 +80,9 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
 
         @BindView(R.id.course_end_textView)
         TextView courseEndTextView;
+
+        @BindView(R.id.courseDetailFab)
+        FloatingActionButton fab;
 
 
         public ViewHolder(@NonNull View itemView) {
