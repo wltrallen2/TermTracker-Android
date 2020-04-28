@@ -109,21 +109,17 @@
             android:textFontWeight="1000"
             android:textColor="@color/list_text_color" />
 
-        <TextView
-            android:id="@+id/course_detail_status_text_view"
+        <Spinner
+            android:id="@+id/course_detail_status_spinner"
             android:layout_width="@dimen/field_width"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="@string/click_to_select_status"
-            android:onClick="showStatusPicker"
-            android:layout_marginLeft="@dimen/detail_text_margin"
-            android:layout_marginStart="@dimen/detail_text_margin"
-            android:layout_marginRight="@dimen/list_text_margin"
-            android:layout_marginEnd="@dimen/list_text_margin"
-            android:layout_marginVertical="@dimen/detail_text_margin"
-            android:textSize="@dimen/detail_text_size"
-            android:textFontWeight="1000"
-            android:textColor="@color/list_text_color" />
+            android:layout_marginLeft="@dimen/list_text_margin"
+            android:layout_marginStart="@dimen/list_text_margin"
+            android:layout_marginRight="@dimen/detail_text_margin"
+            android:layout_marginEnd="@dimen/detail_text_margin"
+            android:layout_marginVertical="@dimen/detail_text_margin" />
+
     </LinearLayout>
 
     <LinearLayout

@@ -37,4 +37,15 @@ public enum CourseStatus {
     public static CourseStatus get(String s) {
         return lookup.get(s);
     }
+
+    public static String[] getCourseStatusStrings() {
+        String[] statuses = new String[] {
+                CourseStatus.PLAN_TO_TAKE.toString(),
+                CourseStatus.IN_PROGRESS.toString(),
+                CourseStatus.COMPLETED.toString(),
+                CourseStatus.DROPPED.toString()
+        };
+
+        return statuses;
+    }
 }

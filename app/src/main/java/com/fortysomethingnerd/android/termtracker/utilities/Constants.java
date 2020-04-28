@@ -9,4 +9,5 @@ public class Constants {
     public static final String TERM_ID_KEY = "term_id_key";
     public static final String TEMP_START_DATE  = "temp_start_date";
     public static final String TEMP_END_DATE  = "temp_end_date";
+    public static final CharSequence STATUS_SPINNER_PROMPT = "Choose course status.";
 }

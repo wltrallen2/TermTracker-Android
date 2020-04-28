@@ -5,7 +5,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.NumberPicker;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -24,6 +28,7 @@ import com.fortysomethingnerd.android.termtracker.viewmodel.CourseDetailViewMode
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.stream.IntStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +36,7 @@ import butterknife.OnClick;
 
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.COURSE_ID_KEY;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.LOG_TAG;
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.STATUS_SPINNER_PROMPT;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TERM_ID_KEY;
 
 public class CourseDetailActivity extends AppCompatActivity {
@@ -40,8 +46,8 @@ public class CourseDetailActivity extends AppCompatActivity {
     @BindView(R.id.course_detail_title_text_view)
     TextView titleTextView;
 
-    @BindView(R.id.course_detail_status_text_view)
-    TextView statusTextView;
+    @BindView(R.id.course_detail_status_spinner)
+    Spinner statusSpinner;
 
     @BindView(R.id.course_detail_end_text_view)
     TextView endTextView;
@@ -66,7 +72,15 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        initStatusSpinner();
         initViewModel();
+    }
+
+    private void initStatusSpinner() {
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter(getApplicationContext(), android.R.layout.simple_spinner_item);
+        adapter.addAll(CourseStatus.getCourseStatusStrings());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        statusSpinner.setAdapter(adapter);
     }
 
     private void initViewModel() {
@@ -77,11 +91,18 @@ public class CourseDetailActivity extends AppCompatActivity {
             public void onChanged(CourseEntity courseEntity) {
                 if (courseEntity != null) {
                     titleTextView.setText(courseEntity.getTitle());
-                    statusTextView.setText(courseEntity.getStatus().toString());
                     endTextView.setText(DateConverter.parseDateToString(courseEntity.getEnd()));
                     mentorNameTextView.setText(courseEntity.getMentorName());
                     mentorEmailTextView.setText(courseEntity.getMentorEmail());
                     mentorPhoneTextView.setText(courseEntity.getMentorPhone());
+
+                    String status = courseEntity.getStatus().toString();
+                    String[] statuses = CourseStatus.getCourseStatusStrings();
+                    int index = 0;
+                    while(index < statuses.length && !statuses[index].equals(status)) {
+                        index++;
+                    }
+                    statusSpinner.setSelection(index);
                 }
             }
         });
@@ -133,10 +154,13 @@ public class CourseDetailActivity extends AppCompatActivity {
 
     private void saveAndReturn() {
         String title = titleTextView.getText().toString();
-        CourseStatus status = CourseStatus.get(statusTextView.getText().toString());
         String mentorName = mentorNameTextView.getText().toString();
         String mentorPhone = mentorPhoneTextView.getText().toString();
         String mentorEmail = mentorEmailTextView.getText().toString();
+
+        int statusIndex = statusSpinner.getSelectedItemPosition();
+        String statusString = CourseStatus.getCourseStatusStrings()[statusIndex];
+        CourseStatus status = CourseStatus.get(statusString);
 
         Bundle extras = getIntent().getExtras();
         int termId = extras.getInt(TERM_ID_KEY);
