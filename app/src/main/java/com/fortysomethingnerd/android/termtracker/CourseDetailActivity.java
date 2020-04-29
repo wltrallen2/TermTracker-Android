@@ -1,11 +1,15 @@
 package com.fortysomethingnerd.android.termtracker;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.NumberPicker;
@@ -24,6 +28,7 @@ import com.fortysomethingnerd.android.termtracker.database.DateConverter;
 import com.fortysomethingnerd.android.termtracker.fragments.DatePickerDialogFragment;
 import com.fortysomethingnerd.android.termtracker.utilities.Constants;
 import com.fortysomethingnerd.android.termtracker.utilities.CourseStatus;
+import com.fortysomethingnerd.android.termtracker.utilities.UtilityMethods;
 import com.fortysomethingnerd.android.termtracker.viewmodel.CourseDetailViewModel;
 
 import java.text.ParseException;
@@ -81,6 +86,14 @@ public class CourseDetailActivity extends AppCompatActivity {
         adapter.addAll(CourseStatus.getCourseStatusStrings());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         statusSpinner.setAdapter(adapter);
+        statusSpinner.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                return false;
+            }
+        });
     }
 
     private void initViewModel() {
@@ -120,6 +133,8 @@ public class CourseDetailActivity extends AppCompatActivity {
 
     @OnClick(R.id.course_detail_end_text_view)
     public void showDatePickerDialog() {
+        UtilityMethods.hideKeyboard(this);
+
         DatePickerDialogFragment dialog = new DatePickerDialogFragment();
         dialog.setTextViewId(R.id.course_detail_end_text_view);
         dialog.show(getSupportFragmentManager(), "date picker");
@@ -153,6 +168,8 @@ public class CourseDetailActivity extends AppCompatActivity {
     }
 
     private void saveAndReturn() {
+        UtilityMethods.hideKeyboard(this);
+
         String title = titleTextView.getText().toString();
         String mentorName = mentorNameTextView.getText().toString();
         String mentorPhone = mentorPhoneTextView.getText().toString();
