@@ -19,6 +19,7 @@ import androidx.lifecycle.Observer;
 import com.fortysomethingnerd.android.termtracker.database.DateConverter;
 import com.fortysomethingnerd.android.termtracker.database.TermEntity;
 import com.fortysomethingnerd.android.termtracker.fragments.DatePickerDialogFragment;
+import com.fortysomethingnerd.android.termtracker.utilities.UtilityMethods;
 import com.fortysomethingnerd.android.termtracker.viewmodel.TermDetailViewModel;
 
 import java.text.ParseException;
@@ -65,7 +66,6 @@ public class TermDetailActivity extends AppCompatActivity {
         }
 
         initViewModel();
-        hideKeyboard();
     }
 
     private void initViewModel() {
@@ -90,16 +90,6 @@ public class TermDetailActivity extends AppCompatActivity {
             int termId = extras.getInt(TERM_ID_KEY);
             mViewModel.loadData(termId);
         }
-    }
-
-    private void hideKeyboard() {
-        View view = this.getCurrentFocus();
-        if (view == null) {
-            view = new View(this);
-        }
-
-        InputMethodManager imm = (InputMethodManager) this.getSystemService(Activity.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
     @Override
@@ -130,6 +120,7 @@ public class TermDetailActivity extends AppCompatActivity {
     }
 
     private void saveAndReturn() {
+        UtilityMethods.hideKeyboard(this);
         String termTitle = termNameTextView.getText().toString();
         String startString = termStartTextView.getText().toString();
         String endString = termEndTextView.getText().toString();
@@ -148,7 +139,6 @@ public class TermDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        hideKeyboard();
         if (mViewModel.mLiveTerm != null) {
             outState.putInt(TERM_ID_KEY, mViewModel.mLiveTerm.getValue().getId());
         }
@@ -165,6 +155,7 @@ public class TermDetailActivity extends AppCompatActivity {
     }
 
     public void showDatePickerDialog(View view) {
+        UtilityMethods.hideKeyboard(this);
         if (view instanceof TextView) {
             int textViewId = view.getId();
             DatePickerDialogFragment datePickerFragment = new DatePickerDialogFragment();
