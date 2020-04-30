@@ -4,6 +4,10 @@ import android.app.Activity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+
 public class UtilityMethods {
 
     public static void hideKeyboard(Activity activity) {
@@ -15,6 +19,12 @@ public class UtilityMethods {
             view = new View(activity);
         }
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static void setTitleForCollapsingToolbarLayout(AppCompatActivity activity, CollapsingToolbarLayout colToolbarLayout, String title) {
+        activity.setTitle(title);
+        activity.getSupportActionBar().setTitle(title);
+        colToolbarLayout.setTitle(title);
     }
 
 }

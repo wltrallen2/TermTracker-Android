@@ -21,6 +21,7 @@ import com.fortysomethingnerd.android.termtracker.database.TermEntity;
 import com.fortysomethingnerd.android.termtracker.fragments.DatePickerDialogFragment;
 import com.fortysomethingnerd.android.termtracker.utilities.UtilityMethods;
 import com.fortysomethingnerd.android.termtracker.viewmodel.TermDetailViewModel;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -53,7 +54,7 @@ public class TermDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.term_detail_activity);
-        Toolbar toolbar = findViewById(R.id.toolbar_term_detail);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_check);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -72,16 +73,33 @@ public class TermDetailActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        setTitle();
+    }
 
-        // TODO: NEXT: This isn't working - Goal: Change title and add delete button when coming back to term from courses on new term creation.
+    private void setTitle() {
+        int termId = -1;
+        try {
+            termId = mViewModel.mLiveTerm.getValue().getId();
+        } catch (Exception e) {
+            // TODO: Handle this exception.
+            e.printStackTrace();
+        }
+
         Bundle extras = getIntent().getExtras();
-        if (extras == null) {
+        if (extras == null && termId == -1) {
             setTitle(getString(R.string.new_term));
             mNewTerm = true;
         } else {
-            setTitle(getString(R.string.edit_term));
-            int termId = extras.getInt(TERM_ID_KEY);
+            if (termId == -1) {
+                termId = extras.getInt(TERM_ID_KEY);
+            }
             mViewModel.loadData(termId);
+
+            CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
+            UtilityMethods.setTitleForCollapsingToolbarLayout(this, collapsingToolbarLayout, getString(R.string.edit_term));
+            mNewTerm = false;
+
+            invalidateOptionsMenu();
         }
     }
 
@@ -95,20 +113,8 @@ public class TermDetailActivity extends AppCompatActivity {
                     termStartTextView.setText(termEntity.getStartString());
                     termEndTextView.setText(termEntity.getEndString());
                 }
-
-//                termId = termEntity.getId();
             }
         });
-
-//        Bundle extras = getIntent().getExtras();
-//        if (extras == null) {
-//            setTitle(getString(R.string.new_term));
-//            mNewTerm = true;
-//        } else {
-//            setTitle(getString(R.string.edit_term));
-//            int termId = extras.getInt(TERM_ID_KEY);
-//            mViewModel.loadData(termId);
-//        }
     }
 
     @Override
@@ -156,14 +162,12 @@ public class TermDetailActivity extends AppCompatActivity {
             Date start = DateConverter.parseStringToDate(startString);
             Date end = DateConverter.parseStringToDate(endString);
             termId = (int) mViewModel.saveTerm(termTitle, start, end);
-//            mViewModel.loadData(termId);
         } catch (ParseException e) {
             // TODO: Handle parse error.
             Log.i(LOG_TAG, "TermDetailActivity.saveAndReturn: " + e);
         }
 
         mViewModel.loadData(termId);
-        mNewTerm = false;
         return termId;
     }
 
