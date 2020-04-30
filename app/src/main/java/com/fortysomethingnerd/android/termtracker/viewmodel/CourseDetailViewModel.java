@@ -39,15 +39,15 @@ public class CourseDetailViewModel extends AndroidViewModel {
         });
     }
 
-    public void saveCourse(int termId, String title, Date end, CourseStatus status, String mentorName, String mentorPhone, String mentorEmail) {
+    public long saveCourse(int termId, String title, Date start, Date end, CourseStatus status, String mentorName, String mentorPhone, String mentorEmail) {
         CourseEntity course = liveCourse.getValue();
         if (course == null) {
 
             if (TextUtils.isEmpty(title) || end == null || status == null
                     || TextUtils.isEmpty(mentorName) || TextUtils.isEmpty(mentorPhone)
-                    || TextUtils.isEmpty(mentorEmail)) { return; }
+                    || TextUtils.isEmpty(mentorEmail)) { return -1; }
 
-            course = new CourseEntity(termId, title.trim(), end, status,
+            course = new CourseEntity(termId, title.trim(), start, end, status,
                     mentorName.trim(), mentorPhone.trim(), mentorEmail.trim());
         } else {
             course.setTitle(title.trim());
@@ -58,7 +58,7 @@ public class CourseDetailViewModel extends AndroidViewModel {
             course.setMentorPhone(mentorPhone.trim());
         }
 
-        repository.insertCourse(course);
+        return repository.insertCourse(course);
     }
 
     public void deleteCourse() {

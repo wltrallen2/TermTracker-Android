@@ -34,4 +34,9 @@
     <string name="new_course">New Course</string>
     <string name="edit_course_details">Edit Course Details</string>
     <string name="delete_course">Delete Course</string>
+    <string name="start_date">Start Date</string>
+    <string name="see_edit_course_notes">See/Edit Course Notes</string>
+    <string name="see_edit_assessments">See/Edit Assessments</string>
+    <string name="course_start_date_date">Course Start Date: Date</string>
+    <string name="projected_end_date_date">Projected End Date: Date</string>
 </resources>

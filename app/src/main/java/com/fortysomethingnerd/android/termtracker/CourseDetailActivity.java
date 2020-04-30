@@ -30,6 +30,7 @@ import com.fortysomethingnerd.android.termtracker.utilities.Constants;
 import com.fortysomethingnerd.android.termtracker.utilities.CourseStatus;
 import com.fortysomethingnerd.android.termtracker.utilities.UtilityMethods;
 import com.fortysomethingnerd.android.termtracker.viewmodel.CourseDetailViewModel;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -44,6 +45,7 @@ import static com.fortysomethingnerd.android.termtracker.utilities.Constants.EDI
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.LOG_TAG;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.STATUS_SPINNER_PROMPT;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TEMP_END_DATE;
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TEMP_START_DATE;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TERM_ID_KEY;
 
 public class CourseDetailActivity extends AppCompatActivity {
@@ -55,6 +57,9 @@ public class CourseDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.course_detail_status_spinner)
     Spinner statusSpinner;
+
+    @BindView(R.id.course_detail_start_text_view)
+    TextView startTextView;
 
     @BindView(R.id.course_detail_end_text_view)
     TextView endTextView;
@@ -81,9 +86,8 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         if (savedInstanceState != null) {
             isEdited = savedInstanceState.getBoolean(EDITING_KEY);
-            //TODO: NEXT -> Make sure this works on a new term too.
+            startTextView.setText(savedInstanceState.getString(TEMP_START_DATE));
             endTextView.setText(savedInstanceState.getString(TEMP_END_DATE));
-
         }
 
         initStatusSpinner();
@@ -98,11 +102,43 @@ public class CourseDetailActivity extends AppCompatActivity {
         statusSpinner.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                //TODO: Can I move this out to a utility method?
                 InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setTitle();
+    }
+
+    private void setTitle() {
+        int courseId = -1;
+        try {
+            courseId = viewModel.getLiveCourse().getValue().getId();
+        } catch (Exception e) {
+            // TODO: Handle this exception.
+            e.printStackTrace();
+        }
+
+        Bundle extras = getIntent().getExtras();
+        if (extras == null && courseId == -1) {
+            setTitle(getString(R.string.new_course));
+            isNewCourse = true;
+        } else {
+            if(courseId == -1) {
+                courseId = extras.getInt(COURSE_ID_KEY);
+            }
+            viewModel.loadCourse(courseId);
+
+            CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
+            UtilityMethods.setTitleForCollapsingToolbarLayout(this, collapsingToolbarLayout, getString(R.string.edit_course_details));
+            isNewCourse = false;
+        }
     }
 
     private void initViewModel() {
@@ -113,6 +149,7 @@ public class CourseDetailActivity extends AppCompatActivity {
             public void onChanged(CourseEntity courseEntity) {
                 if (courseEntity != null && !isEdited) {
                     titleTextView.setText(courseEntity.getTitle());
+                    startTextView.setText(DateConverter.parseDateToString(courseEntity.getStart()));
                     endTextView.setText(DateConverter.parseDateToString(courseEntity.getEnd()));
                     mentorNameTextView.setText(courseEntity.getMentorName());
                     mentorEmailTextView.setText(courseEntity.getMentorEmail());
@@ -128,39 +165,40 @@ public class CourseDetailActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
-        Bundle extras = getIntent().getExtras();
-        int courseId = extras.getInt(COURSE_ID_KEY);
-        if (courseId == 0) {
-            setTitle(getString(R.string.new_course));
-            isNewCourse = true;
-        } else {
-            setTitle(getString(R.string.edit_course_details));
-            viewModel.loadCourse(courseId);
-        }
+    @OnClick(R.id.course_detail_start_text_view)
+    public void startTextViewClickHandler() {
+        showDatePickerDialog(R.id.course_detail_start_text_view);
     }
 
     @OnClick(R.id.course_detail_end_text_view)
-    public void showDatePickerDialog() {
+    public void endTextViewClickHandler() {
+        showDatePickerDialog(R.id.course_detail_end_text_view);
+    }
+
+    public void showDatePickerDialog(int textViewId) {
         UtilityMethods.hideKeyboard(this);
 
         DatePickerDialogFragment dialog = new DatePickerDialogFragment();
-        dialog.setTextViewId(R.id.course_detail_end_text_view);
+        dialog.setTextViewId(textViewId);
         dialog.show(getSupportFragmentManager(), "date picker");
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onPrepareOptionsMenu(Menu menu) {
         if (!isNewCourse) {
             getMenuInflater().inflate(R.menu.menu_course_detail, menu);
         }
-        return super.onCreateOptionsMenu(menu);
+
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             saveAndReturn();
+            finish();
             return true;
         } else if (item.getItemId() == R.id.action_delete_course) {
             viewModel.deleteCourse();
@@ -173,10 +211,11 @@ public class CourseDetailActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         saveAndReturn();
+        finish();
         super.onBackPressed();
     }
 
-    private void saveAndReturn() {
+    private int saveAndReturn() {
         UtilityMethods.hideKeyboard(this);
 
         String title = titleTextView.getText().toString();
@@ -191,23 +230,30 @@ public class CourseDetailActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         int termId = extras.getInt(TERM_ID_KEY);
 
+        int courseId = -1;
         try {
+            Date start = DateConverter.parseStringToDate((startTextView.getText().toString()));
             Date end = DateConverter.parseStringToDate(endTextView.getText().toString());
-            viewModel.saveCourse(termId, title, end, status, mentorName, mentorPhone, mentorEmail);
+            courseId = (int) viewModel.saveCourse(termId, title, start, end, status, mentorName, mentorPhone, mentorEmail);
         } catch (ParseException e) {
             // TODO: Handle parse error.
             Log.i(LOG_TAG, "CourseDetailActivity.saveAndReturn: " + e);
             e.printStackTrace();
         }
-
-        finish();
+        // TODO: Will this cause an exception if courseId = -1? Move wihtin try/catch?
+        viewModel.loadCourse(courseId);
+        return courseId;
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putBoolean(Constants.EDITING_KEY, true);
-        outState.putString(TEMP_END_DATE, endTextView.getText().toString());
+        if (viewModel.getLiveCourse().getValue() != null) {
+            outState.putInt(COURSE_ID_KEY, viewModel.getLiveCourse().getValue().getId());
+        }
 
+        outState.putBoolean(Constants.EDITING_KEY, true);
+        outState.putString(TEMP_START_DATE, startTextView.getText().toString());
+        outState.putString(TEMP_END_DATE, endTextView.getText().toString());
         super.onSaveInstanceState(outState);
     }
 }

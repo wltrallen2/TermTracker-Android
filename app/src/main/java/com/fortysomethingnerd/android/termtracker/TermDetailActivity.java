@@ -118,11 +118,6 @@ public class TermDetailActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         if (!mNewTerm) {
             getMenuInflater().inflate(R.menu.menu_term_detail, menu);
@@ -167,13 +162,14 @@ public class TermDetailActivity extends AppCompatActivity {
             Log.i(LOG_TAG, "TermDetailActivity.saveAndReturn: " + e);
         }
 
+        // TODO: Will this cause an exception if courseId = -1? Move wihtin try/catch?
         mViewModel.loadData(termId);
+        Log.i(LOG_TAG, "TermDetailsActivity.saveAndReturn: termId: " + termId);
         return termId;
     }
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        // TODO: NEXT2 -> Double check that this works for both new and existing term when rotating device.
         if (mViewModel.mLiveTerm.getValue() != null) {
             outState.putInt(TERM_ID_KEY, mViewModel.mLiveTerm.getValue().getId());
         }
@@ -182,11 +178,6 @@ public class TermDetailActivity extends AppCompatActivity {
         outState.putString(TEMP_START_DATE, termStartTextView.getText().toString());
         outState.putString(TEMP_END_DATE, termEndTextView.getText().toString());
         super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
     }
 
     public void showDatePickerDialog(View view) {

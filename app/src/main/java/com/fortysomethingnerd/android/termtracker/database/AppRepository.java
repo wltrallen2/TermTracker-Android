@@ -1,6 +1,7 @@
 package com.fortysomethingnerd.android.termtracker.database;
 
 import android.content.Context;
+import android.telecom.Call;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -92,13 +93,6 @@ public class AppRepository {
         }
 
         return termId;
-
-//        executor.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                mDb.termDao().insertTerm(term);
-//            }
-//        });
     }
 
     public void deleteTerm(TermEntity term) {
@@ -140,13 +134,27 @@ public class AppRepository {
         return mDb.courseDao().getCourseById(courseId);
     }
 
-    public void insertCourse(CourseEntity course) {
-        executor.execute(new Runnable() {
+    public long insertCourse(CourseEntity course) {
+        Callable<Long> callable = new Callable<Long>() {
             @Override
-            public void run() {
-                mDb.courseDao().insertCourse(course);
+            public Long call() throws Exception {
+                return mDb.courseDao().insertCourse(course);
             }
-        });
+        };
+
+        Future<Long> future = executor.submit(callable);
+        long courseId = -1;
+        try {
+            courseId = future.get();
+        } catch (ExecutionException e) {
+            // TODO: Handle this exception.
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            // TODO: Handle this exception.
+            e.printStackTrace();
+        }
+
+        return courseId;
     }
 
     public void deleteCourse(CourseEntity course) {

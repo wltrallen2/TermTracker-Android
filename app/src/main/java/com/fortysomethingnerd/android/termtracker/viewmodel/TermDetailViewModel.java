@@ -1,6 +1,7 @@
 package com.fortysomethingnerd.android.termtracker.viewmodel;
 
 import android.app.Application;
+import android.text.LoginFilter;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -44,6 +45,7 @@ public class TermDetailViewModel extends AndroidViewModel {
     public long saveTerm(String termTitle, Date start, Date end) {
         TermEntity term = mLiveTerm.getValue();
         if (term == null) {
+            Log.i(LOG_TAG, "TermDetailViewModel.saveTerm: term is null");
             if(TextUtils.isEmpty(termTitle.trim())
                 || TextUtils.isEmpty(start.toString())
                 || TextUtils.isEmpty(end.toString())) {
@@ -52,6 +54,8 @@ public class TermDetailViewModel extends AndroidViewModel {
 
             term = new TermEntity(termTitle.trim(), start, end);
         } else {
+            Log.i(LOG_TAG, "TermDetailViewModel.saveTerm: term " + term.toString());
+
             term.setTitle(termTitle.trim());
             term.setStart(start);
             term.setEnd(end);

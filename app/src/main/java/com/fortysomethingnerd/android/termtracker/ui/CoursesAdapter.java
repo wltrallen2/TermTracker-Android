@@ -2,8 +2,7 @@ package com.fortysomethingnerd.android.termtracker.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.Layout;
-import android.util.Log;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +15,6 @@ import com.fortysomethingnerd.android.termtracker.CourseDetailActivity;
 import com.fortysomethingnerd.android.termtracker.R;
 import com.fortysomethingnerd.android.termtracker.database.CourseEntity;
 import com.fortysomethingnerd.android.termtracker.database.DateConverter;
-import com.fortysomethingnerd.android.termtracker.utilities.Constants;
-import com.fortysomethingnerd.android.termtracker.viewmodel.CourseDetailViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
@@ -26,8 +23,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.COURSE_ID_KEY;
-import static com.fortysomethingnerd.android.termtracker.utilities.Constants.LOG_TAG;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TERM_ID_KEY;
+import static com.fortysomethingnerd.android.termtracker.utilities.FormattedText.getHTMLText;
 
 public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHolder> {
 
@@ -52,8 +49,15 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
         final CourseEntity course = courses.get(position);
 
         holder.courseNameTextView.setText(course.getTitle());
-        holder.courseStatusTextView.setText(course.getStatus().toString());
-        holder.courseEndTextView.setText(DateConverter.parseDateToString(course.getEnd()));
+
+        Spanned statusString = getHTMLText("Course Status: ", course.getStatus().toString());
+        holder.courseStatusTextView.setText(statusString);
+
+        Spanned startString = getHTMLText("Start Date: ", DateConverter.parseDateToString(course.getStart()));
+        holder.courseStartTextView.setText(startString);
+
+        Spanned endString = getHTMLText("Projected End Date: ", DateConverter.parseDateToString(course.getEnd()));
+        holder.courseEndTextView.setText(endString);
 
         holder.fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +81,9 @@ public class CoursesAdapter extends RecyclerView.Adapter<CoursesAdapter.ViewHold
 
         @BindView(R.id.course_status_textView)
         TextView courseStatusTextView;
+
+        @BindView(R.id.course_start_textView)
+        TextView courseStartTextView;
 
         @BindView(R.id.course_end_textView)
         TextView courseEndTextView;

@@ -27,13 +27,13 @@ public class SampleData {
 
     public static List<CourseEntity> getCourses(int termId) {
         List<CourseEntity> courses = new ArrayList<>();
-        courses.add(new CourseEntity(termId, "Mobile Applications", getDate(60),
+        courses.add(new CourseEntity(termId, "Mobile Applications", getDate(0), getDate(60),
                 CourseStatus.IN_PROGRESS, "Michelle Heslop",
                 "855-222-3874", "michelle@wgu.edu"));
-        courses.add(new CourseEntity(termId, "Business Basics", getDate(120),
+        courses.add(new CourseEntity(termId, "Business Basics", getDate(60), getDate(120),
                 CourseStatus.IN_PROGRESS, "Michelle Heslop",
                 "855-222-3874", "michelle@wgu.edu"));
-        courses.add(new CourseEntity(termId, "Capstone Project", getDate(240),
+        courses.add(new CourseEntity(termId, "Capstone Project", getDate(120), getDate(240),
                 CourseStatus.PLAN_TO_TAKE, "Michelle Heslop",
                 "855-222-3874", "michelle@wgu.edu"));
         return courses;

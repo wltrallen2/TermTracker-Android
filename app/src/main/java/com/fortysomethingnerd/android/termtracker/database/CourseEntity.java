@@ -15,6 +15,7 @@ public class CourseEntity {
 
     private int termId;
     private String title;
+    private Date start;
     private Date end;
     private CourseStatus status;
     private String mentorName;
@@ -25,10 +26,11 @@ public class CourseEntity {
     public CourseEntity() {
     }
 
-    public CourseEntity(int id, int termId, String title, Date end, CourseStatus status, String mentorName, String mentorPhone, String mentorEmail) {
+    public CourseEntity(int id, int termId, String title, Date start, Date end, CourseStatus status, String mentorName, String mentorPhone, String mentorEmail) {
         this.id = id;
         this.termId = termId;
         this.title = title;
+        this.start = start;
         this.end = end;
         this.status = status;
         this.mentorName = mentorName;
@@ -37,9 +39,10 @@ public class CourseEntity {
     }
 
     @Ignore
-    public CourseEntity(int termId, String title, Date end, CourseStatus status, String mentorName, String mentorPhone, String mentorEmail) {
+    public CourseEntity(int termId, String title, Date start, Date end, CourseStatus status, String mentorName, String mentorPhone, String mentorEmail) {
         this.termId = termId;
         this.title = title;
+        this.start = start;
         this.end = end;
         this.status = status;
         this.mentorName = mentorName;
@@ -69,6 +72,14 @@ public class CourseEntity {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Date getStart() {
+        return start;
+    }
+
+    public void setStart(Date start) {
+        this.start = start;
     }
 
     public Date getEnd() {
@@ -117,6 +128,7 @@ public class CourseEntity {
                 "id=" + id +
                 ", termId=" + termId +
                 ", title='" + title + '\'' +
+                ", start=" + start +
                 ", end=" + end +
                 ", status=" + status +
                 ", mentorName='" + mentorName + '\'' +

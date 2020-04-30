@@ -13,7 +13,7 @@ import java.util.List;
 public interface CourseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertCourse(CourseEntity course);
+    long insertCourse(CourseEntity course);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<CourseEntity> courses);
