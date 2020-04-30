@@ -173,7 +173,8 @@ public class TermDetailActivity extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        if (mViewModel.mLiveTerm != null) {
+        // TODO: NEXT2 -> Double check that this works for both new and existing term when rotating device.
+        if (mViewModel.mLiveTerm.getValue() != null) {
             outState.putInt(TERM_ID_KEY, mViewModel.mLiveTerm.getValue().getId());
         }
 

@@ -40,13 +40,15 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.COURSE_ID_KEY;
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.EDITING_KEY;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.LOG_TAG;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.STATUS_SPINNER_PROMPT;
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TEMP_END_DATE;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TERM_ID_KEY;
 
 public class CourseDetailActivity extends AppCompatActivity {
     private CourseDetailViewModel viewModel;
-    private boolean isNewCourse = false;
+    private boolean isNewCourse, isEdited = false;
 
     @BindView(R.id.course_detail_title_text_view)
     TextView titleTextView;
@@ -77,6 +79,13 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        if (savedInstanceState != null) {
+            isEdited = savedInstanceState.getBoolean(EDITING_KEY);
+            //TODO: NEXT -> Make sure this works on a new term too.
+            endTextView.setText(savedInstanceState.getString(TEMP_END_DATE));
+
+        }
+
         initStatusSpinner();
         initViewModel();
     }
@@ -102,7 +111,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         viewModel.getLiveCourse().observe(this, new Observer<CourseEntity>() {
             @Override
             public void onChanged(CourseEntity courseEntity) {
-                if (courseEntity != null) {
+                if (courseEntity != null && !isEdited) {
                     titleTextView.setText(courseEntity.getTitle());
                     endTextView.setText(DateConverter.parseDateToString(courseEntity.getEnd()));
                     mentorNameTextView.setText(courseEntity.getMentorName());
@@ -192,5 +201,13 @@ public class CourseDetailActivity extends AppCompatActivity {
         }
 
         finish();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(Constants.EDITING_KEY, true);
+        outState.putString(TEMP_END_DATE, endTextView.getText().toString());
+
+        super.onSaveInstanceState(outState);
     }
 }
