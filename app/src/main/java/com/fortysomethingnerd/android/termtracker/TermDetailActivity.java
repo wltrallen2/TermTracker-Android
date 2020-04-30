@@ -47,6 +47,7 @@ public class TermDetailActivity extends AppCompatActivity {
 
     private TermDetailViewModel mViewModel;
     private boolean mNewTerm, mEditing;
+//    private int termId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,19 +69,11 @@ public class TermDetailActivity extends AppCompatActivity {
         initViewModel();
     }
 
-    private void initViewModel() {
-        mViewModel = this.getDefaultViewModelProviderFactory().create(TermDetailViewModel.class);
-        mViewModel.mLiveTerm.observe(this, new Observer<TermEntity>() {
-            @Override
-            public void onChanged(TermEntity termEntity) {
-                if(termEntity != null && !mEditing) {
-                    termNameTextView.setText(termEntity.getTitle());
-                    termStartTextView.setText(termEntity.getStartString());
-                    termEndTextView.setText(termEntity.getEndString());
-                }
-            }
-        });
+    @Override
+    protected void onResume() {
+        super.onResume();
 
+        // TODO: NEXT: This isn't working - Goal: Change title and add delete button when coming back to term from courses on new term creation.
         Bundle extras = getIntent().getExtras();
         if (extras == null) {
             setTitle(getString(R.string.new_term));
@@ -92,18 +85,50 @@ public class TermDetailActivity extends AppCompatActivity {
         }
     }
 
+    private void initViewModel() {
+        mViewModel = this.getDefaultViewModelProviderFactory().create(TermDetailViewModel.class);
+        mViewModel.mLiveTerm.observe(this, new Observer<TermEntity>() {
+            @Override
+            public void onChanged(TermEntity termEntity) {
+                if(termEntity != null && !mEditing) {
+                    termNameTextView.setText(termEntity.getTitle());
+                    termStartTextView.setText(termEntity.getStartString());
+                    termEndTextView.setText(termEntity.getEndString());
+                }
+
+//                termId = termEntity.getId();
+            }
+        });
+
+//        Bundle extras = getIntent().getExtras();
+//        if (extras == null) {
+//            setTitle(getString(R.string.new_term));
+//            mNewTerm = true;
+//        } else {
+//            setTitle(getString(R.string.edit_term));
+//            int termId = extras.getInt(TERM_ID_KEY);
+//            mViewModel.loadData(termId);
+//        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
         if (!mNewTerm) {
             getMenuInflater().inflate(R.menu.menu_term_detail, menu);
         }
-        return super.onCreateOptionsMenu(menu);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
             saveAndReturn();
+            finish();
             return true;
         } else if (item.getItemId() == R.id.action_delete) {
             mViewModel.deleteTerm();
@@ -116,25 +141,30 @@ public class TermDetailActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         saveAndReturn();
+        finish();
         super.onBackPressed();
     }
 
-    private void saveAndReturn() {
+    private int saveAndReturn() {
         UtilityMethods.hideKeyboard(this);
         String termTitle = termNameTextView.getText().toString();
         String startString = termStartTextView.getText().toString();
         String endString = termEndTextView.getText().toString();
 
+        int termId = -1;
         try {
             Date start = DateConverter.parseStringToDate(startString);
             Date end = DateConverter.parseStringToDate(endString);
-            mViewModel.saveTerm(termTitle, start, end);
+            termId = (int) mViewModel.saveTerm(termTitle, start, end);
+//            mViewModel.loadData(termId);
         } catch (ParseException e) {
             // TODO: Handle parse error.
             Log.i(LOG_TAG, "TermDetailActivity.saveAndReturn: " + e);
         }
 
-        finish();
+        mViewModel.loadData(termId);
+        mNewTerm = false;
+        return termId;
     }
 
     @Override
@@ -165,10 +195,10 @@ public class TermDetailActivity extends AppCompatActivity {
     }
 
     public void showCourseActivity(View view) {
-        Intent intent = new Intent(this, CourseListActivity.class);
+        int termId = saveAndReturn();
 
-        TermEntity term = mViewModel.mLiveTerm.getValue();
-        intent.putExtra(TERM_ID_KEY, term.getId());
+        Intent intent = new Intent(this, CourseListActivity.class);
+        intent.putExtra(TERM_ID_KEY, termId);
 
         startActivity(intent);
     }
