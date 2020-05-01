@@ -23,6 +23,7 @@ public class AppRepository {
 
     public LiveData<List<TermEntity>> mTerms;
     public LiveData<List<CourseEntity>> mCourses;
+    public List<AssessmentEntity> mAssessments = SampleData.getAssessments(1);
 
     private AppDatabase mDb;
     private ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -162,6 +163,15 @@ public class AppRepository {
             @Override
             public void run() {
                 mDb.courseDao().deleteCourse(course);
+            }
+        });
+    }
+
+    public void addSampleDataForAssessments(int courseId) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.assessmentDao().insertAll(SampleData.getAssessments(courseId));
             }
         });
     }

@@ -49,4 +49,5 @@
     <string name="due_date_label">Due Date:</string>
     <string name="tap_here_to_set_the_due_date">Tap here to set the due date.</string>
     <string name="assessment_detail">Assessment Detail</string>
+    <string name="delete_all_assessments">Delete All Assessments</string>
 </resources>
