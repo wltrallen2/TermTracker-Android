@@ -184,4 +184,13 @@ public class AppRepository {
     public LiveData<List<AssessmentEntity>> getAllAssessmentsForCourse(Integer courseId) {
         return mDb.assessmentDao().getAssessmentsForCourseId(courseId);
     }
+
+    public void deleteAllAssessmentsForCourse(int courseId) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.assessmentDao().deleteAssessmentsForCourseId(courseId);
+            }
+        });
+    }
 }

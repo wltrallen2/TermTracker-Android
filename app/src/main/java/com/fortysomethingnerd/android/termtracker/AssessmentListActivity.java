@@ -111,6 +111,8 @@ public class AssessmentListActivity extends AppCompatActivity {
             return true;
         } else if (item.getItemId() == R.id.action_add_sample_assessment_data) {
             viewModel.addSampleData(courseId);
+        } else if (item.getItemId() == R.id.action_delete_all_assessments) {
+            viewModel.deleteAllAssessments(courseId);
         }
 
         return super.onOptionsItemSelected(item);

@@ -43,4 +43,8 @@ public class AssessmentListViewModel extends AndroidViewModel {
     public LiveData<List<AssessmentEntity>> getFilteredAssessments() {
         return filteredAssessments;
     }
+
+    public void deleteAllAssessments(int courseId) {
+        appRepository.deleteAllAssessmentsForCourse(courseId);
+    }
 }
