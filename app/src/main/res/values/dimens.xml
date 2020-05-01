@@ -13,4 +13,6 @@
     <dimen name="field_width">75pt</dimen>
     <dimen name="button_margin_vertical">0dp</dimen>
     <dimen name="list_text_margin_vertical">0dp</dimen>
+    <dimen name="assessment_detail_label_width">25dp</dimen>
+    <dimen name="assessment_detail_field_width">75dp</dimen>
 </resources>

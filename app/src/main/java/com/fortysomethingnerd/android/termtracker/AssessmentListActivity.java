@@ -1,5 +1,6 @@
 package com.fortysomethingnerd.android.termtracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -13,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.fortysomethingnerd.android.termtracker.database.AssessmentEntity;
+import com.fortysomethingnerd.android.termtracker.ui.AssessmentsAdapter;
 import com.fortysomethingnerd.android.termtracker.utilities.SampleData;
 
 import java.lang.reflect.Array;
@@ -21,6 +23,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.LOG_TAG;
 
@@ -28,6 +31,7 @@ public class AssessmentListActivity extends AppCompatActivity {
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+    AssessmentsAdapter adapter;
 
     private List<AssessmentEntity> assessmentData = new ArrayList<>();
 
@@ -59,6 +63,9 @@ public class AssessmentListActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
+
+        adapter = new AssessmentsAdapter(assessmentData, AssessmentListActivity.this);
+        recyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -69,5 +76,11 @@ public class AssessmentListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick(R.id.assessmentDetailButton)
+    void AssessmentDetailClickHandler() {
+        Intent intent = new Intent(this, AssessmentDetailActivity.class);
+        startActivity(intent);
     }
 }

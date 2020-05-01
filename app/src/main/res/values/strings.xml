@@ -42,4 +42,11 @@
     <string name="assessment_name">Assessment Name</string>
     <string name="goal_date_date">Goal Date: Date</string>
     <string name="due_date_date">Due Date: Date</string>
+    <string name="assessment_list">Assessment List</string>
+    <string name="assessment_name_label">Assessment Name:</string>
+    <string name="tap_to_enter_assessment_name">Tap to enter assessment name.</string>
+    <string name="goal_date_label">Goal Date:</string>
+    <string name="due_date_label">Due Date:</string>
+    <string name="tap_here_to_set_the_due_date">Tap here to set the due date.</string>
+    <string name="assessment_detail">Assessment Detail</string>
 </resources>
