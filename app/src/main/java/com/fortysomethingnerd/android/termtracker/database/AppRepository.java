@@ -23,7 +23,7 @@ public class AppRepository {
 
     public LiveData<List<TermEntity>> mTerms;
     public LiveData<List<CourseEntity>> mCourses;
-    public List<AssessmentEntity> mAssessments = SampleData.getAssessments(1);
+    public LiveData<List<AssessmentEntity>> mAssessments;
 
     private AppDatabase mDb;
     private ExecutorService executor = Executors.newSingleThreadExecutor();
@@ -40,6 +40,7 @@ public class AppRepository {
         mDb = AppDatabase.getInstance(context);
         mTerms = getAllTerms();
         mCourses = getAllCourses();
+        mAssessments = getAllAssessments();
     }
 
     public void addSampleDataForTerms() {
@@ -167,6 +168,10 @@ public class AppRepository {
         });
     }
 
+    private LiveData<List<AssessmentEntity>> getAllAssessments() {
+        return mDb.assessmentDao().getAll();
+    }
+
     public void addSampleDataForAssessments(int courseId) {
         executor.execute(new Runnable() {
             @Override
@@ -174,5 +179,9 @@ public class AppRepository {
                 mDb.assessmentDao().insertAll(SampleData.getAssessments(courseId));
             }
         });
+    }
+
+    public LiveData<List<AssessmentEntity>> getAllAssessmentsForCourse(Integer courseId) {
+        return mDb.assessmentDao().getAssessmentsForCourseId(courseId);
     }
 }

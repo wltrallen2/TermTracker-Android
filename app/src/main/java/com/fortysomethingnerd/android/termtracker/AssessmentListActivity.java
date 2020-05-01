@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +23,7 @@ import com.fortysomethingnerd.android.termtracker.viewmodel.AssessmentListViewMo
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -55,8 +57,6 @@ public class AssessmentListActivity extends AppCompatActivity {
         setCourseId();
         initRecyclerView();
         initViewModel();
-
-        assessmentData.addAll(viewModel.getAssessments());
     }
 
     private void setCourseId() {
@@ -67,7 +67,24 @@ public class AssessmentListActivity extends AppCompatActivity {
     }
 
     private void initViewModel() {
+        final Observer<List<AssessmentEntity>> observer = new Observer<List<AssessmentEntity>>() {
+            @Override
+            public void onChanged(List<AssessmentEntity> assessmentEntities) {
+                assessmentData.clear();
+                assessmentData.addAll(assessmentEntities);
+
+                if (adapter == null) {
+                    adapter = new AssessmentsAdapter(assessmentData, AssessmentListActivity.this);
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        };
+
         viewModel = this.getDefaultViewModelProviderFactory().create(AssessmentListViewModel.class);
+        viewModel.setFilter(courseId);
+        viewModel.getFilteredAssessments().observe(this, observer);
     }
 
     private void initRecyclerView() {
@@ -79,9 +96,6 @@ public class AssessmentListActivity extends AppCompatActivity {
         DividerItemDecoration dividerItemDecoration =
                 new DividerItemDecoration(recyclerView.getContext(), layoutManager.getOrientation());
         recyclerView.addItemDecoration(dividerItemDecoration);
-
-        adapter = new AssessmentsAdapter(assessmentData, AssessmentListActivity.this);
-        recyclerView.setAdapter(adapter);
     }
 
     @Override
