@@ -39,6 +39,13 @@
             android:parentActivityName=".CourseListActivity"
             android:windowSoftInputMode="stateHidden">
         </activity>
+        <activity
+            android:name=".AssessmentListActivity"
+            android:label="@string/course_detail"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".CourseDetailActivity"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
     </application>
 
 </manifest>

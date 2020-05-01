@@ -2,6 +2,7 @@ package com.fortysomethingnerd.android.termtracker;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -255,5 +256,14 @@ public class CourseDetailActivity extends AppCompatActivity {
         outState.putString(TEMP_START_DATE, startTextView.getText().toString());
         outState.putString(TEMP_END_DATE, endTextView.getText().toString());
         super.onSaveInstanceState(outState);
+    }
+
+    public void showAssessmentActivity(View view) {
+        int courseId = saveAndReturn();
+
+        Intent intent = new Intent(this, AssessmentListActivity.class);
+        intent.putExtra(COURSE_ID_KEY, courseId);
+
+        startActivity(intent);
     }
 }
