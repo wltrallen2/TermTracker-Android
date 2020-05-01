@@ -39,4 +39,7 @@
     <string name="see_edit_assessments">See/Edit Assessments</string>
     <string name="course_start_date_date">Course Start Date: Date</string>
     <string name="projected_end_date_date">Projected End Date: Date</string>
+    <string name="assessment_name">Assessment Name</string>
+    <string name="goal_date_date">Goal Date: Date</string>
+    <string name="due_date_date">Due Date: Date</string>
 </resources>
