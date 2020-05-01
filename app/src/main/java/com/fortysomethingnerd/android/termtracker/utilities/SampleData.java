@@ -1,5 +1,6 @@
 package com.fortysomethingnerd.android.termtracker.utilities;
 
+import com.fortysomethingnerd.android.termtracker.database.AssessmentEntity;
 import com.fortysomethingnerd.android.termtracker.database.CourseEntity;
 import com.fortysomethingnerd.android.termtracker.database.TermEntity;
 
@@ -37,5 +38,13 @@ public class SampleData {
                 CourseStatus.PLAN_TO_TAKE, "Michelle Heslop",
                 "855-222-3874", "michelle@wgu.edu"));
         return courses;
+    }
+
+    public static List<AssessmentEntity> getAssessments(int courseId) {
+        List<AssessmentEntity> assessments = new ArrayList<>();
+        assessments.add(new AssessmentEntity(1, courseId, "Test #1", getDate(60), getDate(120)));
+        assessments.add(new AssessmentEntity(2, courseId, "Test #2", getDate(90), getDate(150)));
+        assessments.add(new AssessmentEntity(3, courseId, "Project: Website", getDate(120), getDate(180)));
+        return assessments;
     }
 }

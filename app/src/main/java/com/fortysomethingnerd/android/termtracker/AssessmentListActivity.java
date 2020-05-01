@@ -1,6 +1,7 @@
 package com.fortysomethingnerd.android.termtracker;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -11,13 +12,24 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fortysomethingnerd.android.termtracker.database.AssessmentEntity;
+import com.fortysomethingnerd.android.termtracker.utilities.SampleData;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.LOG_TAG;
 
 public class AssessmentListActivity extends AppCompatActivity {
 
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+
+    private List<AssessmentEntity> assessmentData = new ArrayList<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,6 +43,11 @@ public class AssessmentListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         initRecyclerView();
+
+        assessmentData.addAll(SampleData.getAssessments(1));
+        for(AssessmentEntity assessment : assessmentData) {
+            Log.i(LOG_TAG, "new Assessment: " + assessment.toString());
+        }
     }
 
     private void initRecyclerView() {
