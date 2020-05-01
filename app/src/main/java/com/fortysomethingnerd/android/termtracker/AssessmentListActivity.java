@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fortysomethingnerd.android.termtracker.database.AssessmentEntity;
 import com.fortysomethingnerd.android.termtracker.ui.AssessmentsAdapter;
 import com.fortysomethingnerd.android.termtracker.utilities.SampleData;
+import com.fortysomethingnerd.android.termtracker.viewmodel.AssessmentListViewModel;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class AssessmentListActivity extends AppCompatActivity {
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     AssessmentsAdapter adapter;
+    AssessmentListViewModel viewModel;
 
     private List<AssessmentEntity> assessmentData = new ArrayList<>();
 
@@ -47,11 +49,13 @@ public class AssessmentListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         initRecyclerView();
+        initViewModel();
 
-        assessmentData.addAll(SampleData.getAssessments(1));
-        for(AssessmentEntity assessment : assessmentData) {
-            Log.i(LOG_TAG, "new Assessment: " + assessment.toString());
-        }
+        assessmentData.addAll(viewModel.getAssessments());
+    }
+
+    private void initViewModel() {
+        viewModel = this.getDefaultViewModelProviderFactory().create(AssessmentListViewModel.class);
     }
 
     private void initRecyclerView() {

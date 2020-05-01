@@ -9,7 +9,8 @@ import androidx.room.TypeConverters;
 
 import com.fortysomethingnerd.android.termtracker.utilities.CourseStatus;
 
-@Database(entities = {TermEntity.class, CourseEntity.class}, version = 4, exportSchema = false)
+@Database(entities = {TermEntity.class, CourseEntity.class, AssessmentEntity.class},
+        version = 4, exportSchema = false)
 @TypeConverters({DateConverter.class, CourseStatusConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     public static final String DATABASE_NAME = "AppDatabase.db";

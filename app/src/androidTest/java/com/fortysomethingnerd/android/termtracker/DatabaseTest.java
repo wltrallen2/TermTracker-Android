@@ -8,10 +8,11 @@ import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
 import com.fortysomethingnerd.android.termtracker.database.AppDatabase;
+import com.fortysomethingnerd.android.termtracker.database.AssessmentDao;
+import com.fortysomethingnerd.android.termtracker.database.AssessmentEntity;
 import com.fortysomethingnerd.android.termtracker.database.CourseDao;
 import com.fortysomethingnerd.android.termtracker.database.CourseEntity;
 import com.fortysomethingnerd.android.termtracker.database.TermDao;
-import com.fortysomethingnerd.android.termtracker.database.TermEntity;
 import com.fortysomethingnerd.android.termtracker.utilities.SampleData;
 
 import org.junit.After;
@@ -27,8 +28,10 @@ public class DatabaseTest {
     private AppDatabase mDb;
     private TermDao termDao;
     private CourseDao courseDao;
+    private AssessmentDao assessmentDao;
 
     private int termId;
+    private int courseId;
 
     @Before
     public void createDb() {
@@ -36,12 +39,14 @@ public class DatabaseTest {
         mDb = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).build();
         termDao = mDb.termDao();
         courseDao = mDb.courseDao();
-        int termId = 1;
+        assessmentDao = mDb.assessmentDao();
+        termId = 1;
+        courseId = 1;
         Log.i(TAG, "createDb");
     }
 
-    private void loadSampleCourses() {
-        courseDao.insertAll(SampleData.getCourses(termId));
+    private void loadSampleAssessments() {
+        assessmentDao.insertAll(SampleData.getAssessments(courseId));
     }
 
     @After
@@ -52,27 +57,27 @@ public class DatabaseTest {
 
     @Test
     public void createAndCountItems() {
-        loadSampleCourses();
-        int count = courseDao.getCount();
+        loadSampleAssessments();
+        int count = assessmentDao.getCount();
         Log.i(TAG, "createAndCountItems: count = " + count);
-        assertEquals(SampleData.getCourses(termId).size(), count);
+        assertEquals(SampleData.getAssessments(courseId).size(), count);
     }
 
     @Test
     public void compareString() {
-        loadSampleCourses();
-        CourseEntity original = SampleData.getCourses(termId).get(0);
-        CourseEntity fromDb = courseDao.getCourseById(1);
+        loadSampleAssessments();
+        AssessmentEntity original = SampleData.getAssessments(courseId).get(0);
+        AssessmentEntity fromDb = assessmentDao.getAssessmentById(1);
         assertEquals(original.getTitle(), fromDb.getTitle());
         assertEquals(1, fromDb.getId());
     }
 
     @Test
-    public void compareTermId() {
-        loadSampleCourses();
-        CourseEntity original = SampleData.getCourses(termId).get(0);
-        CourseEntity fromDb = courseDao.getCourseById(1);
-        assertEquals(original.getTermId(), fromDb.getTermId());
+    public void compareCourseId() {
+        loadSampleAssessments();
+        AssessmentEntity original = SampleData.getAssessments(courseId).get(0);
+        AssessmentEntity fromDb = assessmentDao.getAssessmentById(1);
+        assertEquals(original.getCourseId(), fromDb.getCourseId());
     }
 
 }
