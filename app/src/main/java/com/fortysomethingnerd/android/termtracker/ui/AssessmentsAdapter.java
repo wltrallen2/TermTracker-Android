@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.Layout;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.fortysomethingnerd.android.termtracker.AssessmentDetailActivity;
 import com.fortysomethingnerd.android.termtracker.R;
 import com.fortysomethingnerd.android.termtracker.database.AssessmentEntity;
 import com.fortysomethingnerd.android.termtracker.database.DateConverter;
+import com.fortysomethingnerd.android.termtracker.utilities.Constants;
 import com.fortysomethingnerd.android.termtracker.utilities.FormattedText;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -25,6 +27,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.*;
 
 public class AssessmentsAdapter extends RecyclerView.Adapter<AssessmentsAdapter.ViewHolder> {
 
@@ -61,6 +65,8 @@ public class AssessmentsAdapter extends RecyclerView.Adapter<AssessmentsAdapter.
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, AssessmentDetailActivity.class);
+                intent.putExtra(COURSE_ID_KEY, assessment.getCourseId());
+                intent.putExtra(ASSESSMENT_ID_KEY, assessment.getId());
                 context.startActivity(intent);
             }
         });

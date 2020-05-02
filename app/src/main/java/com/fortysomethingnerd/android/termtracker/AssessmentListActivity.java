@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -118,8 +119,8 @@ public class AssessmentListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @OnClick(R.id.assessmentDetailButton)
-    void AssessmentDetailClickHandler() {
+    @OnClick(R.id.assessmentDetailFab)
+    void assessmentDetailClickHandler() {
         Intent intent = new Intent(this, AssessmentDetailActivity.class);
         startActivity(intent);
     }

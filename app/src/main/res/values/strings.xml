@@ -50,4 +50,6 @@
     <string name="tap_here_to_set_the_due_date">Tap here to set the due date.</string>
     <string name="assessment_detail">Assessment Detail</string>
     <string name="delete_all_assessments">Delete All Assessments</string>
+    <string name="new_assessment">New Assessment</string>
+    <string name="edit_assessment">Edit Assessment</string>
 </resources>

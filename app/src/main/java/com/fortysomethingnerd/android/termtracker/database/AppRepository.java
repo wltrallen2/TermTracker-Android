@@ -193,4 +193,8 @@ public class AppRepository {
             }
         });
     }
+
+    public AssessmentEntity getAssessementById(int assessmentId) {
+        return mDb.assessmentDao().getAssessmentById(assessmentId);
+    }
 }

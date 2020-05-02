@@ -34,7 +34,7 @@
             android:textColor="@color/list_text_color" />
 
         <EditText
-            android:id="@+id/assesment_detail_title_text_view"
+            android:id="@+id/assessment_detail_title_text_view"
             android:layout_width="@dimen/assessment_detail_field_width"
             android:layout_height="wrap_content"
             android:layout_weight="1"
