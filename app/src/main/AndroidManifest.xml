@@ -60,7 +60,13 @@
             android:parentActivityName=".CourseDetailActivity"
             android:windowSoftInputMode="stateHidden">
         </activity>
-
+        <activity
+            android:name=".NoteDetailActivity"
+            android:label="@string/note_detail"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".NoteListActivity"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
     </application>
 
 </manifest>

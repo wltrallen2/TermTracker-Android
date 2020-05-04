@@ -1,15 +1,23 @@
 package com.fortysomethingnerd.android.termtracker.database;
 
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
+
+@Entity(tableName = "notes")
 public class NoteEntity {
 
+    @PrimaryKey(autoGenerate = true)
     private int id;
     private int courseId;
     private String title;
     private String text;
 
+    @Ignore
     public NoteEntity() {
     }
 
+    @Ignore
     public NoteEntity(int courseId, String title, String text) {
         this.courseId = courseId;
         this.title = title;

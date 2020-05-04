@@ -54,4 +54,7 @@
     <string name="edit_assessment">Edit Assessment</string>
     <string name="delete_assessment">Delete Assessment</string>
     <string name="notes_list">Notes List</string>
+    <string name="enter_note_title">Enter note title.</string>
+    <string name="enter_note_text">Enter note text...</string>
+    <string name="note_detail">Note Detail</string>
 </resources>

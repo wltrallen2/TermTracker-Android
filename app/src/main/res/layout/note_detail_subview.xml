@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".NoteDetailActivity"
+    tools:showIn="@layout/note_detail_activity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/note_detail_title_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/list_text_margin_horizontal"
+            android:layout_marginTop="@dimen/list_text_margin_horizontal"
+            android:layout_marginBottom="@dimen/list_text_margin_vertical"
+            android:hint="@string/enter_note_title"
+            android:inputType="textCapWords"
+            android:textSize="@dimen/list_text_size" />
+
+        <EditText
+            android:id="@+id/note_detail_text_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginHorizontal="@dimen/list_text_margin_horizontal"
+            android:layout_marginTop="@dimen/list_text_margin_vertical"
+            android:hint="@string/enter_note_text"
+            android:inputType="textMultiLine|textCapSentences"
+            android:textSize="@dimen/list_text_size" />
+
+        </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

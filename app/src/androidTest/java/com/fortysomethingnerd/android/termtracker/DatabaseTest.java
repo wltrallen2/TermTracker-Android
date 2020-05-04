@@ -11,7 +11,8 @@ import com.fortysomethingnerd.android.termtracker.database.AppDatabase;
 import com.fortysomethingnerd.android.termtracker.database.AssessmentDao;
 import com.fortysomethingnerd.android.termtracker.database.AssessmentEntity;
 import com.fortysomethingnerd.android.termtracker.database.CourseDao;
-import com.fortysomethingnerd.android.termtracker.database.CourseEntity;
+import com.fortysomethingnerd.android.termtracker.database.NoteDao;
+import com.fortysomethingnerd.android.termtracker.database.NoteEntity;
 import com.fortysomethingnerd.android.termtracker.database.TermDao;
 import com.fortysomethingnerd.android.termtracker.utilities.SampleData;
 
@@ -29,6 +30,7 @@ public class DatabaseTest {
     private TermDao termDao;
     private CourseDao courseDao;
     private AssessmentDao assessmentDao;
+    private NoteDao noteDao;
 
     private int termId;
     private int courseId;
@@ -40,13 +42,14 @@ public class DatabaseTest {
         termDao = mDb.termDao();
         courseDao = mDb.courseDao();
         assessmentDao = mDb.assessmentDao();
+        noteDao = mDb.notesDao();
         termId = 1;
         courseId = 1;
         Log.i(TAG, "createDb");
     }
 
-    private void loadSampleAssessments() {
-        assessmentDao.insertAll(SampleData.getAssessments(courseId));
+    private void loadSampleNotes() {
+        noteDao.insertAll(SampleData.getNotes(courseId));
     }
 
     @After
@@ -57,26 +60,26 @@ public class DatabaseTest {
 
     @Test
     public void createAndCountItems() {
-        loadSampleAssessments();
-        int count = assessmentDao.getCount();
+        loadSampleNotes();
+        int count =  noteDao.getCount();
         Log.i(TAG, "createAndCountItems: count = " + count);
-        assertEquals(SampleData.getAssessments(courseId).size(), count);
+        assertEquals(SampleData.getNotes(courseId).size(), count);
     }
 
     @Test
     public void compareString() {
-        loadSampleAssessments();
-        AssessmentEntity original = SampleData.getAssessments(courseId).get(0);
-        AssessmentEntity fromDb = assessmentDao.getAssessmentById(1);
+        loadSampleNotes();
+        NoteEntity original = SampleData.getNotes(courseId).get(0);
+        NoteEntity fromDb = noteDao.getNoteById(1);
         assertEquals(original.getTitle(), fromDb.getTitle());
         assertEquals(1, fromDb.getId());
     }
 
     @Test
     public void compareCourseId() {
-        loadSampleAssessments();
-        AssessmentEntity original = SampleData.getAssessments(courseId).get(0);
-        AssessmentEntity fromDb = assessmentDao.getAssessmentById(1);
+        loadSampleNotes();
+        NoteEntity original = SampleData.getNotes(courseId).get(0);
+        NoteEntity fromDb = noteDao.getNoteById(1);
         assertEquals(original.getCourseId(), fromDb.getCourseId());
     }
 

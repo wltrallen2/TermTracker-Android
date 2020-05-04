@@ -1,5 +1,6 @@
 package com.fortysomethingnerd.android.termtracker;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -23,6 +24,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.COURSE_ID_KEY;
 
 public class NoteListActivity extends AppCompatActivity {
 
@@ -56,7 +60,7 @@ public class NoteListActivity extends AppCompatActivity {
     private void setCourseId() {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            courseId = extras.getInt(Constants.COURSE_ID_KEY);
+            courseId = extras.getInt(COURSE_ID_KEY);
         }
     }
 
@@ -82,5 +86,12 @@ public class NoteListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @OnClick(R.id.noteListFab)
+    public void newNoteClickHandler() {
+        Intent intent = new Intent(this, NoteDetailActivity.class);
+        intent.putExtra(COURSE_ID_KEY, courseId);
+        startActivity(intent);
     }
 }

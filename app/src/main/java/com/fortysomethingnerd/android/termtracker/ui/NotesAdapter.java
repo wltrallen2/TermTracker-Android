@@ -1,6 +1,7 @@
 package com.fortysomethingnerd.android.termtracker.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +11,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.fortysomethingnerd.android.termtracker.NoteDetailActivity;
 import com.fortysomethingnerd.android.termtracker.R;
 import com.fortysomethingnerd.android.termtracker.database.NoteEntity;
+import com.fortysomethingnerd.android.termtracker.utilities.Constants;
 import com.fortysomethingnerd.android.termtracker.utilities.FormattedText;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.*;
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.NOTE_ID_KEY;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {
 
@@ -43,6 +50,16 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
         Spanned titleText = FormattedText.getHTMLText(note.getTitle(), "");
         holder.titleTextView.setText(titleText);
         holder.textView.setText(note.getText());
+
+        holder.fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, NoteDetailActivity.class);
+                intent.putExtra(COURSE_ID_KEY, note.getCourseId());
+                intent.putExtra(NOTE_ID_KEY, note.getId());
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -56,6 +73,9 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> 
 
         @BindView(R.id.note_textView)
         TextView textView;
+
+        @BindView(R.id.noteDetailFab)
+        FloatingActionButton fab;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
