@@ -1,6 +1,7 @@
 package com.fortysomethingnerd.android.termtracker.viewmodel;
 
 import android.app.Application;
+import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -9,11 +10,12 @@ import androidx.lifecycle.MutableLiveData;
 import com.fortysomethingnerd.android.termtracker.database.AppRepository;
 import com.fortysomethingnerd.android.termtracker.database.AssessmentEntity;
 
+import java.util.Date;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 public class AssessmentDetailViewModel extends AndroidViewModel {
-    private MutableLiveData<AssessmentEntity> assessment = new MutableLiveData<>();
+    private MutableLiveData<AssessmentEntity> liveAssessment = new MutableLiveData<>();
     private AppRepository appRepository;
     private Executor executor = Executors.newSingleThreadExecutor();
 
@@ -22,8 +24,8 @@ public class AssessmentDetailViewModel extends AndroidViewModel {
         appRepository = AppRepository.getInstance(application.getApplicationContext());
     }
 
-    public MutableLiveData<AssessmentEntity> getAssessment() {
-        return assessment;
+    public MutableLiveData<AssessmentEntity> getLiveAssessment() {
+        return liveAssessment;
     }
 
     public void loadAssessment(int assessmentId) {
@@ -31,8 +33,29 @@ public class AssessmentDetailViewModel extends AndroidViewModel {
             @Override
             public void run() {
                 AssessmentEntity assessmentEntity = appRepository.getAssessementById(assessmentId);
-                assessment.postValue(assessmentEntity);
+                liveAssessment.postValue(assessmentEntity);
             }
         });
+    }
+
+    public void saveAssessment(int courseId, String title, Date goalDate, Date dueDate) {
+        AssessmentEntity assessment = liveAssessment.getValue();
+        if (assessment == null) {
+
+            if (TextUtils.isEmpty(title) || goalDate == null || dueDate == null
+                || courseId < 1) { return; }
+
+            assessment = new AssessmentEntity(courseId, title.trim(), goalDate, dueDate);
+        } else {
+            assessment.setTitle(title);
+            assessment.setGoalDate(goalDate);
+            assessment.setDueDate(dueDate);
+        }
+
+        appRepository.insertAssessment(assessment);
+    }
+
+    public void deleteAssessment() {
+        appRepository.deleteAssessment(liveAssessment.getValue());
     }
 }

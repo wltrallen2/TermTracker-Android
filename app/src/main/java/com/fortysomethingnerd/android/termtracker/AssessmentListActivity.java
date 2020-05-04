@@ -122,6 +122,7 @@ public class AssessmentListActivity extends AppCompatActivity {
     @OnClick(R.id.assessmentDetailFab)
     void assessmentDetailClickHandler() {
         Intent intent = new Intent(this, AssessmentDetailActivity.class);
+        intent.putExtra(COURSE_ID_KEY, courseId);
         startActivity(intent);
     }
 }

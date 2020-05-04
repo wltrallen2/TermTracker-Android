@@ -197,4 +197,22 @@ public class AppRepository {
     public AssessmentEntity getAssessementById(int assessmentId) {
         return mDb.assessmentDao().getAssessmentById(assessmentId);
     }
+
+    public void insertAssessment(AssessmentEntity assessment) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.assessmentDao().insertAssessment(assessment);
+            }
+        });
+    }
+
+    public void deleteAssessment(AssessmentEntity assessment) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.assessmentDao().deleteAssessment(assessment);
+            }
+        });
+    }
 }

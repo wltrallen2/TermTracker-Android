@@ -52,4 +52,5 @@
     <string name="delete_all_assessments">Delete All Assessments</string>
     <string name="new_assessment">New Assessment</string>
     <string name="edit_assessment">Edit Assessment</string>
+    <string name="delete_assessment">Delete Assessment</string>
 </resources>

@@ -3,6 +3,7 @@ package com.fortysomethingnerd.android.termtracker;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -11,21 +12,27 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
-import androidx.room.PrimaryKey;
 
 import com.fortysomethingnerd.android.termtracker.database.AssessmentEntity;
 import com.fortysomethingnerd.android.termtracker.database.DateConverter;
+import com.fortysomethingnerd.android.termtracker.fragments.DatePickerDialogFragment;
+import com.fortysomethingnerd.android.termtracker.utilities.Constants;
 import com.fortysomethingnerd.android.termtracker.utilities.UtilityMethods;
 import com.fortysomethingnerd.android.termtracker.viewmodel.AssessmentDetailViewModel;
-import com.fortysomethingnerd.android.termtracker.viewmodel.AssessmentListViewModel;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 
-import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.*;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.ASSESSMENT_ID_KEY;
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.COURSE_ID_KEY;
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.EDITING_KEY;
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TEMP_GOAL_DATE;
 
 public class AssessmentDetailActivity extends AppCompatActivity {
 
@@ -52,14 +59,19 @@ public class AssessmentDetailActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        if (savedInstanceState != null) {
+            isEdited = savedInstanceState.getBoolean(EDITING_KEY);
+            goalTextView.setText(savedInstanceState.getString(TEMP_GOAL_DATE));
+            dueDateTextView.setText(savedInstanceState.getString(TEMP_DUE_DATE));
+        }
+
         initViewModel();
-        setTitle();
     }
 
     private void setTitle() {
         int assessmentId = -1;
         try {
-            assessmentId = viewModel.getAssessment().getValue().getId();
+            assessmentId = viewModel.getLiveAssessment().getValue().getId();
         } catch (Exception e) {
             // TODO: Handle this exception.
             e.printStackTrace();
@@ -81,11 +93,26 @@ public class AssessmentDetailActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setTitle();
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if(!isNewAssessment) {
+            getMenuInflater().inflate(R.menu.menu_assessment_detail, menu);
+        }
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     private void initViewModel() {
         Observer<AssessmentEntity> observer = new Observer<AssessmentEntity>() {
             @Override
             public void onChanged(AssessmentEntity assessmentEntity) {
-                if (assessmentEntity != null) {
+                if (assessmentEntity != null && !isEdited) {
                     titleTextView.setText(assessmentEntity.getTitle());
                     goalTextView.setText(DateConverter.parseDateToString(assessmentEntity.getGoalDate()));
                     dueDateTextView.setText(DateConverter.parseDateToString(assessmentEntity.getDueDate()));
@@ -94,7 +121,7 @@ public class AssessmentDetailActivity extends AppCompatActivity {
         };
 
         viewModel = this.getDefaultViewModelProviderFactory().create(AssessmentDetailViewModel.class);
-        viewModel.getAssessment().observe(this, observer);
+        viewModel.getLiveAssessment().observe(this, observer);
     }
 
     @Override
@@ -102,13 +129,60 @@ public class AssessmentDetailActivity extends AppCompatActivity {
         if (item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;
+        } else if (item.getItemId() == R.id.action_delete_assessment) {
+            viewModel.deleteAssessment();
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
 
+    @OnClick(R.id.assessment_detail_goal_text_view)
+    public void goalTextViewClickHandler() {
+        showDatePickerDialog(R.id.assessment_detail_goal_text_view);
+    }
+
+    @OnClick(R.id.assessment_detail_due_date_text_view)
+    public void dueDateTextViewClickHandler() {
+        showDatePickerDialog(R.id.assessment_detail_due_date_text_view);
+    }
+
+    public void showDatePickerDialog(int textViewId) {
+        UtilityMethods.hideKeyboard(this);
+
+        DatePickerDialogFragment dialog = new DatePickerDialogFragment();
+        dialog.setTextViewId(textViewId);
+        dialog.show(getSupportFragmentManager(), "date picker");
+    }
+
     @Override
     public void onBackPressed() {
+        saveAndReturn();
         finish();
         super.onBackPressed();
+    }
+
+    private void saveAndReturn() {
+        UtilityMethods.hideKeyboard(this);
+
+        Bundle extras = getIntent().getExtras();
+        int courseId = extras.getInt(COURSE_ID_KEY);
+
+        try {
+            String title = titleTextView.getText().toString();
+            Date goalDate = DateConverter.parseStringToDate(goalTextView.getText().toString());
+            Date dueDate = DateConverter.parseStringToDate((dueDateTextView.getText().toString()));
+            viewModel.saveAssessment(courseId, title, goalDate, dueDate);
+        } catch (ParseException e) {
+            // TODO: Handle this exception.
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putBoolean(EDITING_KEY, true);
+        outState.putString(TEMP_GOAL_DATE, goalTextView.getText().toString());
+        outState.putString(TEMP_DUE_DATE, dueDateTextView.getText().toString());
+        super.onSaveInstanceState(outState);
     }
 }
