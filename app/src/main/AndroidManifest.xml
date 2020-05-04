@@ -45,13 +45,22 @@
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".CourseDetailActivity"
             android:windowSoftInputMode="stateHidden">
-        </activity>        <activity
+        </activity>
+        <activity
         android:name=".AssessmentDetailActivity"
         android:label="@string/assessment_detail"
         android:theme="@style/AppTheme.NoActionBar"
         android:parentActivityName=".AssessmentListActivity"
         android:windowSoftInputMode="stateHidden">
-    </activity>
+        </activity>
+        <activity
+            android:name=".NoteListActivity"
+            android:label="@string/notes_list"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".CourseDetailActivity"
+            android:windowSoftInputMode="stateHidden">
+        </activity>
+
     </application>
 
 </manifest>

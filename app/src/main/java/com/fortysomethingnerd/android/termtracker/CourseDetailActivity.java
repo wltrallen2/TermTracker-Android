@@ -258,12 +258,34 @@ public class CourseDetailActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
-    public void showAssessmentActivity(View view) {
+    // public void showAssessmentActivity(View view) {
+    //     int courseId = saveAndReturn();
+    //
+    //     Intent intent = new Intent(this, AssessmentListActivity.class);
+    //     intent.putExtra(COURSE_ID_KEY, courseId);
+    //
+    //     startActivity(intent);
+    // }
+
+    @OnClick({R.id.assessments_button, R.id.notes_button})
+    public void showNextActivity(View view) {
         int courseId = saveAndReturn();
+        Class activityClass = getClassForView(view);
+        if(activityClass != null) {
+            Intent intent = new Intent(this, activityClass);
+            intent.putExtra(COURSE_ID_KEY, courseId);
+            startActivity(intent);
+        }
+    }
 
-        Intent intent = new Intent(this, AssessmentListActivity.class);
-        intent.putExtra(COURSE_ID_KEY, courseId);
-
-        startActivity(intent);
+    private Class getClassForView(View view) {
+        switch(view.getId()) {
+            case R.id.assessments_button :
+                return AssessmentListActivity.class;
+            case R.id.notes_button :
+                return NoteListActivity.class;
+            default :
+                return null;
+        }
     }
 }

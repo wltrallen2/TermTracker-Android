@@ -289,7 +289,7 @@
         android:textColor="@color/white"
         android:backgroundTint="@color/colorPrimary"
         android:text="@string/see_edit_assessments"
-        android:onClick="showAssessmentActivity"/>
+        />
 
     <Button
         android:id="@+id/notes_button"
@@ -301,6 +301,6 @@
         android:textColor="@color/white"
         android:backgroundTint="@color/colorPrimary"
         android:text="@string/see_edit_course_notes"
-        android:onClick="showNotesActivity"/>
+        />
 
 </LinearLayout>
