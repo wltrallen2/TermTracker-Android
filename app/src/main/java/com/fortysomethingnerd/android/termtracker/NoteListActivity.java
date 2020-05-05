@@ -3,12 +3,15 @@ package com.fortysomethingnerd.android.termtracker;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +21,7 @@ import com.fortysomethingnerd.android.termtracker.database.NoteEntity;
 import com.fortysomethingnerd.android.termtracker.ui.NotesAdapter;
 import com.fortysomethingnerd.android.termtracker.utilities.Constants;
 import com.fortysomethingnerd.android.termtracker.utilities.SampleData;
+import com.fortysomethingnerd.android.termtracker.viewmodel.NoteListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +40,7 @@ public class NoteListActivity extends AppCompatActivity {
     private int courseId;
     private List<NoteEntity> notesData = new ArrayList<>();
     private NotesAdapter adapter;
+    private NoteListViewModel viewModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,12 +54,8 @@ public class NoteListActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setCourseId();
+        initViewModel();
         initRecyclerView();
-
-        notesData.addAll(SampleData.getNotes(courseId));
-        for(NoteEntity note : notesData) {
-            Log.i(Constants.LOG_TAG, "NoteListActivity.onCreate: " + note);
-        }
     }
 
     private void setCourseId() {
@@ -62,6 +63,27 @@ public class NoteListActivity extends AppCompatActivity {
         if (extras != null) {
             courseId = extras.getInt(COURSE_ID_KEY);
         }
+    }
+
+    private void initViewModel() {
+        Observer<List<NoteEntity>> observer = new Observer<List<NoteEntity>>() {
+            @Override
+            public void onChanged(List<NoteEntity> noteEntities) {
+                notesData.clear();
+                notesData.addAll(noteEntities);
+
+                if(adapter == null) {
+                    adapter = new NotesAdapter(notesData, NoteListActivity.this);
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        };
+
+        viewModel = this.getDefaultViewModelProviderFactory().create(NoteListViewModel.class);
+        viewModel.setFilter(courseId);
+        viewModel.getFilteredNotes().observe(this, observer);
     }
 
     private void initRecyclerView() {
@@ -73,9 +95,12 @@ public class NoteListActivity extends AppCompatActivity {
         DividerItemDecoration divider =
                 new DividerItemDecoration(recyclerView.getContext(), linearLayoutManager.getOrientation());
         recyclerView.addItemDecoration(divider);
+    }
 
-        adapter = new NotesAdapter(notesData, this);
-        recyclerView.setAdapter(adapter);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_note_list, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -83,6 +108,10 @@ public class NoteListActivity extends AppCompatActivity {
         if(item.getItemId() == android.R.id.home) {
             onBackPressed();
             return true;
+        } else if (item.getItemId() == R.id.action_add_sample_notes) {
+            viewModel.addSampleNotes(courseId);
+        } else if (item.getItemId() == R.id.action_delete_all_notes) {
+            viewModel.deleteAllNotesForCourseId(courseId);
         }
 
         return super.onOptionsItemSelected(item);

@@ -1,5 +1,6 @@
 package com.fortysomethingnerd.android.termtracker.database;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -24,10 +25,10 @@ public interface NoteDao {
     NoteEntity getNoteById(int id);
 
     @Query("SELECT * FROM notes ORDER BY id DESC")
-    List<NoteEntity> getAllNotes();
+    LiveData<List<NoteEntity>> getAllNotes();
 
     @Query("SELECT * FROM notes WHERE courseId = :courseId ORDER BY id DESC")
-    List<NoteEntity> getAllNotesForCourseId(int courseId);
+    LiveData<List<NoteEntity>> getAllNotesForCourseId(int courseId);
 
     @Query("DELETE FROM notes")
     void deleteAllNotes();

@@ -56,9 +56,9 @@ public class SampleData {
 
     public static List<NoteEntity> getNotes(int courseId) {
         List<NoteEntity> notes = new ArrayList<>();
-        notes.add(new NoteEntity(1, courseId, "Sample Note 1", SAMPLE_TEXT_1));
-        notes.add(new NoteEntity(2, courseId, "Sample Note 2", SAMPLE_TEXT_2));
-        notes.add(new NoteEntity(3, courseId, "Sample Note 3", SAMPLE_TEXT_3));
+        notes.add(new NoteEntity(courseId, "Sample Note 1", SAMPLE_TEXT_1));
+        notes.add(new NoteEntity(courseId, "Sample Note 2", SAMPLE_TEXT_2));
+        notes.add(new NoteEntity(courseId, "Sample Note 3", SAMPLE_TEXT_3));
         return notes;
     }
 }

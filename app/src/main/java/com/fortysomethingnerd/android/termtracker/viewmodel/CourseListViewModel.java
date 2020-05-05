@@ -25,7 +25,7 @@ public class CourseListViewModel extends AndroidViewModel {
 
     public CourseListViewModel(@NonNull Application application) {
         super(application);
-        repository = AppRepository.getInstance(getApplication());
+        repository = AppRepository.getInstance(application.getApplicationContext());
         courses = repository.mCourses;
         filteredCourses = Transformations
                 .switchMap(filter, termId -> repository.getAllCoursesForTerm(termId));

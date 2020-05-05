@@ -22,7 +22,7 @@ public class AssessmentListViewModel extends AndroidViewModel {
 
     public AssessmentListViewModel(@NonNull Application application) {
         super(application);
-        appRepository = AppRepository.getInstance(getApplication());
+        appRepository = AppRepository.getInstance(application.getApplicationContext());
         assessments = appRepository.mAssessments;
         filteredAssessments = Transformations
                 .switchMap(filter, courseId -> appRepository.getAllAssessmentsForCourse(courseId));

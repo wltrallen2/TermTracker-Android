@@ -29,7 +29,7 @@ public class TermDetailViewModel extends AndroidViewModel {
 
     public TermDetailViewModel(@NonNull Application application) {
         super(application);
-        mRepository = AppRepository.getInstance(getApplication());
+        mRepository = AppRepository.getInstance(application.getApplicationContext());
     }
 
     public void loadData(int termId) {
