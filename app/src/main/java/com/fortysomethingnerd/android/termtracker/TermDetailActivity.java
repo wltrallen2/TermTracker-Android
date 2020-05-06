@@ -1,5 +1,6 @@
 package com.fortysomethingnerd.android.termtracker;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
@@ -129,11 +131,32 @@ public class TermDetailActivity extends AppCompatActivity {
             finish();
             return true;
         } else if (item.getItemId() == R.id.action_delete) {
-            mViewModel.deleteTerm();
-            finish();
+            if(isSafeToDelete()) {
+                mViewModel.deleteTerm();
+                finish();
+            } else {
+                showErrorDialog();
+            }
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showErrorDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.error_term_contains_classes);
+        builder.setNeutralButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private boolean isSafeToDelete() {
+        return mViewModel.isSafeToDelete();
     }
 
     @Override

@@ -263,4 +263,28 @@ public class AppRepository {
             }
         });
     }
+
+    public boolean isSafeToDeleteTerm(TermEntity term) {
+        Callable<Boolean> callable = new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                int count = mDb.courseDao().getCountOfCoursesForTermId(term.getId());
+                return count == 0;
+            }
+        };
+
+        Future<Boolean> future = executor.submit(callable);
+
+        boolean safeToDelete = false;
+        try {
+            safeToDelete = future.get();
+        } catch (ExecutionException e) {
+            // TODO: Handle these exceptions.
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return safeToDelete;
+    }
 }

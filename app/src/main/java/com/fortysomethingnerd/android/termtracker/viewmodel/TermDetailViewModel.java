@@ -63,4 +63,8 @@ public class TermDetailViewModel extends AndroidViewModel {
     public void deleteTerm() {
         mRepository.deleteTerm(mLiveTerm.getValue());
     }
+
+    public boolean isSafeToDelete() {
+        return mRepository.isSafeToDeleteTerm(mLiveTerm.getValue());
+    }
 }

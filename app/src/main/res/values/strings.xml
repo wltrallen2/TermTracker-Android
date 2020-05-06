@@ -62,4 +62,6 @@
     <string name="edit_note">Edit Note</string>
     <string name="new_note">New Note</string>
     <string name="delete_note">Delete Note</string>
+    <string name="error_term_contains_classes">This term currently contains classes and cannot be deleted. To delete this term, please delete the classes from the term first.</string>
+    <string name="dialog_cancel">Cancel</string>
 </resources>
