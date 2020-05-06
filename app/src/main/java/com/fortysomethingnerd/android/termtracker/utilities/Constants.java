@@ -6,6 +6,7 @@ public class Constants {
     public static final String COURSE_ID_KEY = "course_id_key";
     public static final String DATE_FORMAT_CHAR_SEQUENCE = "EEE, MMM d, yyyy";
     public static final String EDITING_KEY = "editing_key";
+    public static final long LAUNCH_SCREEN_DURATION = 2000L;
     public static final String LOG_TAG = "log_tag";
     public static final String NOTE_ID_KEY = "note_id_key";
     public static final String TERM_ID_KEY = "term_id_key";
