@@ -2,10 +2,8 @@ package com.fortysomethingnerd.android.termtracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import com.fortysomethingnerd.android.termtracker.database.TermEntity;
-import com.fortysomethingnerd.android.termtracker.ui.TermsAdapter;
-import com.fortysomethingnerd.android.termtracker.viewmodel.MainViewModel;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,9 +12,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
+import com.fortysomethingnerd.android.termtracker.database.TermEntity;
+import com.fortysomethingnerd.android.termtracker.ui.TermsAdapter;
+import com.fortysomethingnerd.android.termtracker.viewmodel.MainViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

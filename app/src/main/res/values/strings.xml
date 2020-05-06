@@ -59,4 +59,7 @@
     <string name="note_detail">Note Detail</string>
     <string name="add_sample_notes">Add Sample Notes</string>
     <string name="delete_all_notes">Delete All Notes</string>
+    <string name="edit_note">Edit Note</string>
+    <string name="new_note">New Note</string>
+    <string name="delete_note">Delete Note</string>
 </resources>

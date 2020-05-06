@@ -7,8 +7,6 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.fortysomethingnerd.android.termtracker.utilities.CourseStatus;
-
 @Database(entities = {TermEntity.class, CourseEntity.class,
         AssessmentEntity.class, NoteEntity.class},
         version = 5, exportSchema = false)

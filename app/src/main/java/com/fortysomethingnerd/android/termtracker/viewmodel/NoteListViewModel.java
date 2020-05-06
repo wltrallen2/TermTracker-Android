@@ -7,14 +7,10 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
-import androidx.lifecycle.ViewModel;
 
 import com.fortysomethingnerd.android.termtracker.database.AppRepository;
 import com.fortysomethingnerd.android.termtracker.database.NoteEntity;
-import com.fortysomethingnerd.android.termtracker.utilities.SampleData;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class NoteListViewModel extends AndroidViewModel {

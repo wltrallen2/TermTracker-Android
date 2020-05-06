@@ -1,7 +1,6 @@
 package com.fortysomethingnerd.android.termtracker.viewmodel;
 
 import android.app.Application;
-import android.text.LoginFilter;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -11,9 +10,6 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.fortysomethingnerd.android.termtracker.database.AppRepository;
 import com.fortysomethingnerd.android.termtracker.database.TermEntity;
-import com.fortysomethingnerd.android.termtracker.utilities.Constants;
-
-import org.w3c.dom.Text;
 
 import java.util.Date;
 import java.util.concurrent.Executor;

@@ -10,7 +10,6 @@ import androidx.lifecycle.Transformations;
 
 import com.fortysomethingnerd.android.termtracker.database.AppRepository;
 import com.fortysomethingnerd.android.termtracker.database.AssessmentEntity;
-import com.fortysomethingnerd.android.termtracker.utilities.SampleData;
 
 import java.util.List;
 

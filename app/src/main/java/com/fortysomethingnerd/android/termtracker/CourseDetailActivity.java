@@ -1,19 +1,15 @@
 package com.fortysomethingnerd.android.termtracker;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -22,7 +18,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.Observer;
-import androidx.room.OnConflictStrategy;
 
 import com.fortysomethingnerd.android.termtracker.database.CourseEntity;
 import com.fortysomethingnerd.android.termtracker.database.DateConverter;
@@ -35,7 +30,6 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.text.ParseException;
 import java.util.Date;
-import java.util.stream.IntStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,7 +38,6 @@ import butterknife.OnClick;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.COURSE_ID_KEY;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.EDITING_KEY;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.LOG_TAG;
-import static com.fortysomethingnerd.android.termtracker.utilities.Constants.STATUS_SPINNER_PROMPT;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TEMP_END_DATE;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TEMP_START_DATE;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TERM_ID_KEY;

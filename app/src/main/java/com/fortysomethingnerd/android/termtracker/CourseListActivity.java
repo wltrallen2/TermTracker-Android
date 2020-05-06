@@ -2,7 +2,6 @@ package com.fortysomethingnerd.android.termtracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -17,19 +16,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fortysomethingnerd.android.termtracker.database.CourseEntity;
 import com.fortysomethingnerd.android.termtracker.ui.CoursesAdapter;
-import com.fortysomethingnerd.android.termtracker.utilities.Constants;
-import com.fortysomethingnerd.android.termtracker.utilities.SampleData;
 import com.fortysomethingnerd.android.termtracker.viewmodel.CourseListViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.fortysomethingnerd.android.termtracker.utilities.Constants.LOG_TAG;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TERM_ID_KEY;
 
 public class CourseListActivity extends AppCompatActivity {

@@ -2,10 +2,8 @@ package com.fortysomethingnerd.android.termtracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,20 +16,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.fortysomethingnerd.android.termtracker.database.AssessmentEntity;
 import com.fortysomethingnerd.android.termtracker.ui.AssessmentsAdapter;
-import com.fortysomethingnerd.android.termtracker.utilities.SampleData;
 import com.fortysomethingnerd.android.termtracker.viewmodel.AssessmentListViewModel;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.COURSE_ID_KEY;
-import static com.fortysomethingnerd.android.termtracker.utilities.Constants.LOG_TAG;
 
 public class AssessmentListActivity extends AppCompatActivity {
 

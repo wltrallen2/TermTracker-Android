@@ -3,7 +3,6 @@ package com.fortysomethingnerd.android.termtracker;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -16,7 +15,6 @@ import androidx.lifecycle.Observer;
 import com.fortysomethingnerd.android.termtracker.database.AssessmentEntity;
 import com.fortysomethingnerd.android.termtracker.database.DateConverter;
 import com.fortysomethingnerd.android.termtracker.fragments.DatePickerDialogFragment;
-import com.fortysomethingnerd.android.termtracker.utilities.Constants;
 import com.fortysomethingnerd.android.termtracker.utilities.UtilityMethods;
 import com.fortysomethingnerd.android.termtracker.viewmodel.AssessmentDetailViewModel;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -28,10 +26,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-import static com.fortysomethingnerd.android.termtracker.utilities.Constants.*;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.ASSESSMENT_ID_KEY;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.COURSE_ID_KEY;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.EDITING_KEY;
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TEMP_DUE_DATE;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TEMP_GOAL_DATE;
 
 public class AssessmentDetailActivity extends AppCompatActivity {
@@ -70,13 +68,18 @@ public class AssessmentDetailActivity extends AppCompatActivity {
 
     private void setTitle() {
         int assessmentId = -1;
-        try {
-            assessmentId = viewModel.getLiveAssessment().getValue().getId();
-        } catch (Exception e) {
-            // TODO: Handle this exception.
-            e.printStackTrace();
-        }
+        // TODO: Delete this code after testing. Don't need this in this activity
+        // because user will not be returning to this activity from a descendant activity.
+        // try {
+        //     assessmentId = viewModel.getLiveAssessment().getValue().getId();
+        // } catch (Exception e) {
+        //     // TODO: Handle this exception.
+        //     e.printStackTrace();
+        // }
 
+        // TODO: Test this without the null check, then delete if not needed.
+        // Null check is not needed because the extras Bundle will never be null.
+        // It will always contain the courseId value.
         Bundle extras = getIntent().getExtras();
         if (extras == null && assessmentId == -1) {
             setTitle(getString(R.string.new_assessment));

@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fortysomethingnerd.android.termtracker.NoteDetailActivity;
 import com.fortysomethingnerd.android.termtracker.R;
 import com.fortysomethingnerd.android.termtracker.database.NoteEntity;
-import com.fortysomethingnerd.android.termtracker.utilities.Constants;
 import com.fortysomethingnerd.android.termtracker.utilities.FormattedText;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -23,7 +22,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.fortysomethingnerd.android.termtracker.utilities.Constants.*;
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.COURSE_ID_KEY;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.NOTE_ID_KEY;
 
 public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.ViewHolder> {

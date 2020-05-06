@@ -2,9 +2,7 @@ package com.fortysomethingnerd.android.termtracker.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.text.Layout;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,18 +15,16 @@ import com.fortysomethingnerd.android.termtracker.AssessmentDetailActivity;
 import com.fortysomethingnerd.android.termtracker.R;
 import com.fortysomethingnerd.android.termtracker.database.AssessmentEntity;
 import com.fortysomethingnerd.android.termtracker.database.DateConverter;
-import com.fortysomethingnerd.android.termtracker.utilities.Constants;
 import com.fortysomethingnerd.android.termtracker.utilities.FormattedText;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.fortysomethingnerd.android.termtracker.utilities.Constants.*;
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.ASSESSMENT_ID_KEY;
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.COURSE_ID_KEY;
 
 public class AssessmentsAdapter extends RecyclerView.Adapter<AssessmentsAdapter.ViewHolder> {
 

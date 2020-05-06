@@ -1,7 +1,6 @@
 package com.fortysomethingnerd.android.termtracker.database;
 
 import android.content.Context;
-import android.telecom.Call;
 import android.util.Log;
 
 import androidx.lifecycle.LiveData;
@@ -11,7 +10,6 @@ import com.fortysomethingnerd.android.termtracker.utilities.SampleData;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -240,6 +238,28 @@ public class AppRepository {
             @Override
             public void run() {
                 mDb.notesDao().deleteAllNotesForCourseId(courseId);
+            }
+        });
+    }
+
+    public NoteEntity getNoteById(int noteId) {
+        return mDb.notesDao().getNoteById(noteId);
+    }
+
+    public void saveNote(NoteEntity note) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.notesDao().insertNote(note);
+            }
+        });
+    }
+
+    public void deleteNote(NoteEntity note) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                mDb.notesDao().deleteNote(note);
             }
         });
     }

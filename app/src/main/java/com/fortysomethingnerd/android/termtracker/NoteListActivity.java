@@ -2,9 +2,7 @@ package com.fortysomethingnerd.android.termtracker;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -16,11 +14,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.fortysomethingnerd.android.termtracker.R;
 import com.fortysomethingnerd.android.termtracker.database.NoteEntity;
 import com.fortysomethingnerd.android.termtracker.ui.NotesAdapter;
-import com.fortysomethingnerd.android.termtracker.utilities.Constants;
-import com.fortysomethingnerd.android.termtracker.utilities.SampleData;
 import com.fortysomethingnerd.android.termtracker.viewmodel.NoteListViewModel;
 
 import java.util.ArrayList;
