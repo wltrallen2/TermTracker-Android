@@ -38,14 +38,14 @@ public class AssessmentDetailViewModel extends AndroidViewModel {
         });
     }
 
-    public void saveAssessment(int courseId, String title, Date goalDate, Date dueDate) {
+    public void saveAssessment(int courseId, String title, Date goalDate, boolean isGoalAlarmActive, Date dueDate) {
         AssessmentEntity assessment = liveAssessment.getValue();
         if (assessment == null) {
 
             if (TextUtils.isEmpty(title) || goalDate == null || dueDate == null
                 || courseId < 1) { return; }
 
-            assessment = new AssessmentEntity(courseId, title.trim(), goalDate, dueDate);
+            assessment = new AssessmentEntity(courseId, title.trim(), goalDate, isGoalAlarmActive, dueDate);
         } else {
             assessment.setTitle(title);
             assessment.setGoalDate(goalDate);

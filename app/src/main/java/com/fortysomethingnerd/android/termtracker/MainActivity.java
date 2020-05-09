@@ -1,9 +1,13 @@
 package com.fortysomethingnerd.android.termtracker;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -46,9 +50,26 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        createNotificationChannels();
+
         ButterKnife.bind(this);
         initRecyclerView();
         initViewModel();
+    }
+
+    private void createNotificationChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            String channel_id = getString(R.string.course_tracker_notification_channel_id);
+            CharSequence name = getString(R.string.course_reminders_notification_channel_name);
+            String description = getString(R.string.course_reminders_notification_channel_description);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+
+            NotificationChannel channel = new NotificationChannel(channel_id, name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
     private void initViewModel() {

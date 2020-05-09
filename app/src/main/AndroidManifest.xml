@@ -9,71 +9,69 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <receiver
+            android:name=".components.MyReceiver"
+            android:enabled="true"
+            android:exported="true"></receiver>
+
         <activity
             android:name=".LaunchActivity"
-            android:label= "@string/app_name"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.BrandedLaunch"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
-            android:label= "@string/app_name"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".TermDetailActivity"
             android:label="@string/title_term_detail"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".MainActivity"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".CourseListActivity"
             android:label="@string/course_list"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".TermDetailActivity"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".CourseDetailActivity"
             android:label="@string/course_detail"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".CourseListActivity"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".AssessmentListActivity"
             android:label="@string/assessment_list"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".CourseDetailActivity"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
-        android:name=".AssessmentDetailActivity"
-        android:label="@string/assessment_detail"
-        android:theme="@style/AppTheme.NoActionBar"
-        android:parentActivityName=".AssessmentListActivity"
-        android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:name=".AssessmentDetailActivity"
+            android:label="@string/assessment_detail"
+            android:parentActivityName=".AssessmentListActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".NoteListActivity"
             android:label="@string/notes_list"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".CourseDetailActivity"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".NoteDetailActivity"
             android:label="@string/note_detail"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".NoteListActivity"
-            android:windowSoftInputMode="stateHidden">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden"></activity>
     </application>
 
 </manifest>

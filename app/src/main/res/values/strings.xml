@@ -34,7 +34,7 @@
     <string name="new_course">New Course</string>
     <string name="edit_course_details">Edit Course Details</string>
     <string name="delete_course">Delete Course</string>
-    <string name="start_date">Start Date</string>
+    <string name="start_date">Start Date:</string>
     <string name="see_edit_course_notes">See/Edit Course Notes</string>
     <string name="see_edit_assessments">See/Edit Assessments</string>
     <string name="course_start_date_date">Course Start Date: Date</string>
@@ -64,4 +64,10 @@
     <string name="delete_note">Delete Note</string>
     <string name="error_term_contains_classes">This term currently contains classes and cannot be deleted. To delete this term, please delete the classes from the term first.</string>
     <string name="dialog_cancel">Cancel</string>
+    <string name="course_reminders_notification_channel_name">Course Reminders</string>
+    <string name="course_reminders_notification_channel_description">Notification Channel for Courser Reminders from WGU Student Term Tracker</string>
+    <string name="course_starting">Course Starting</string>
+    <string name="course_tracker_notification_channel_id">course_tracker_notification_channel_id</string>
+    <string name="course_starting_today">Course Starting Today</string>
+    <string name="course_ending_today">Course Ending Today</string>
 </resources>

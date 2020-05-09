@@ -1,6 +1,7 @@
 package com.fortysomethingnerd.android.termtracker.viewmodel;
 
 import android.app.Application;
+import android.content.Context;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -39,7 +40,8 @@ public class CourseDetailViewModel extends AndroidViewModel {
         });
     }
 
-    public long saveCourse(int termId, String title, Date start, Date end, CourseStatus status, String mentorName, String mentorPhone, String mentorEmail) {
+    public long saveCourse(int termId, String title, Date start, boolean isStartAlarmActive,
+                           Date end, boolean isEndAlarmActive, CourseStatus status, String mentorName, String mentorPhone, String mentorEmail) {
         CourseEntity course = liveCourse.getValue();
         if (course == null) {
 
@@ -47,11 +49,14 @@ public class CourseDetailViewModel extends AndroidViewModel {
                     || TextUtils.isEmpty(mentorName) || TextUtils.isEmpty(mentorPhone)
                     || TextUtils.isEmpty(mentorEmail)) { return -1; }
 
-            course = new CourseEntity(termId, title.trim(), start, end, status,
+            course = new CourseEntity(termId, title.trim(), start, isStartAlarmActive, end, isEndAlarmActive, status,
                     mentorName.trim(), mentorPhone.trim(), mentorEmail.trim());
         } else {
             course.setTitle(title.trim());
+            course.setStart(start);
+            course.setStartAlarmActive(isStartAlarmActive);
             course.setEnd(end);
+            course.setEndAlarmActive(isEndAlarmActive);
             course.setStatus(status);
             course.setMentorName(mentorName.trim());
             course.setMentorEmail(mentorEmail.trim());

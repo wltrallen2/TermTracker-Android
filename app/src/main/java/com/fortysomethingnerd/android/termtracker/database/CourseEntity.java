@@ -16,7 +16,9 @@ public class CourseEntity {
     private int termId;
     private String title;
     private Date start;
+    private boolean isStartAlarmActive;
     private Date end;
+    private boolean isEndAlarmActive;
     private CourseStatus status;
     private String mentorName;
     private String mentorPhone;
@@ -26,12 +28,16 @@ public class CourseEntity {
     public CourseEntity() {
     }
 
-    public CourseEntity(int id, int termId, String title, Date start, Date end, CourseStatus status, String mentorName, String mentorPhone, String mentorEmail) {
+    public CourseEntity(int id, int termId, String title, Date start, boolean isStartAlarmActive,
+                        Date end, boolean isEndAlarmActive, CourseStatus status, String mentorName,
+                        String mentorPhone, String mentorEmail) {
         this.id = id;
         this.termId = termId;
         this.title = title;
         this.start = start;
+        this.isStartAlarmActive = isStartAlarmActive;
         this.end = end;
+        this.isEndAlarmActive = isEndAlarmActive;
         this.status = status;
         this.mentorName = mentorName;
         this.mentorPhone = mentorPhone;
@@ -39,11 +45,15 @@ public class CourseEntity {
     }
 
     @Ignore
-    public CourseEntity(int termId, String title, Date start, Date end, CourseStatus status, String mentorName, String mentorPhone, String mentorEmail) {
+    public CourseEntity(int termId, String title, Date start, boolean isStartAlarmActive,
+                        Date end, boolean isEndAlarmActive, CourseStatus status, String mentorName,
+                        String mentorPhone, String mentorEmail) {
         this.termId = termId;
         this.title = title;
         this.start = start;
+        this.isStartAlarmActive = isStartAlarmActive;
         this.end = end;
+        this.isEndAlarmActive = isEndAlarmActive;
         this.status = status;
         this.mentorName = mentorName;
         this.mentorPhone = mentorPhone;
@@ -82,12 +92,28 @@ public class CourseEntity {
         this.start = start;
     }
 
+    public boolean isStartAlarmActive() {
+        return isStartAlarmActive;
+    }
+
+    public void setStartAlarmActive(boolean startAlarmActive) {
+        this.isStartAlarmActive = startAlarmActive;
+    }
+
     public Date getEnd() {
         return end;
     }
 
     public void setEnd(Date end) {
         this.end = end;
+    }
+
+    public boolean isEndAlarmActive() {
+        return isEndAlarmActive;
+    }
+
+    public void setEndAlarmActive(boolean endAlarmActive) {
+        this.isEndAlarmActive = endAlarmActive;
     }
 
     public CourseStatus getStatus() {
@@ -129,7 +155,9 @@ public class CourseEntity {
                 ", termId=" + termId +
                 ", title='" + title + '\'' +
                 ", start=" + start +
+                ", startAlarmIsSet=" + isStartAlarmActive +
                 ", end=" + end +
+                ", endAlarmIsSet=" + isEndAlarmActive +
                 ", status=" + status +
                 ", mentorName='" + mentorName + '\'' +
                 ", mentorPhone='" + mentorPhone + '\'' +

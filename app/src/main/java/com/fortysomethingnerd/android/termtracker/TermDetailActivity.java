@@ -177,14 +177,12 @@ public class TermDetailActivity extends AppCompatActivity {
             Date start = DateConverter.parseStringToDate(startString);
             Date end = DateConverter.parseStringToDate(endString);
             termId = (int) mViewModel.saveTerm(termTitle, start, end);
+            mViewModel.loadData(termId);
         } catch (ParseException e) {
             // TODO: Handle parse error.
             Log.i(LOG_TAG, "TermDetailActivity.saveAndReturn: " + e);
         }
 
-        // TODO: Will this cause an exception if courseId = -1? Move wihtin try/catch?
-        mViewModel.loadData(termId);
-        Log.i(LOG_TAG, "TermDetailsActivity.saveAndReturn: termId: " + termId);
         return termId;
     }
 
@@ -212,10 +210,13 @@ public class TermDetailActivity extends AppCompatActivity {
 
     public void showCourseActivity(View view) {
         int termId = saveAndReturn();
+        if (termId > 0) {
+            Intent intent = new Intent(this, CourseListActivity.class);
+            intent.putExtra(TERM_ID_KEY, termId);
 
-        Intent intent = new Intent(this, CourseListActivity.class);
-        intent.putExtra(TERM_ID_KEY, termId);
-
-        startActivity(intent);
+            startActivity(intent);
+        } else {
+            // TODO: Handle case when user has not completed term info.
+        }
     }
 }

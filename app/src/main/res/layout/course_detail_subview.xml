@@ -57,7 +57,7 @@
         <TextView
             android:layout_width="@dimen/label_width"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:text="@string/start_date"
             android:textAlignment="textEnd"
             android:gravity="end"
@@ -84,6 +84,15 @@
             android:textSize="@dimen/detail_text_size"
             android:textFontWeight="1000"
             android:textColor="@color/list_text_color"/>
+
+        <ImageView
+            android:id="@+id/alarm_course_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="@dimen/list_fab_margin"
+            app:srcCompat="@drawable/ic_alarm_grey" />
     </LinearLayout>
 
 
@@ -96,7 +105,7 @@
         <TextView
             android:layout_width="@dimen/label_width"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:text="@string/proj_end_date"
             android:textAlignment="textEnd"
             android:gravity="end"
@@ -123,6 +132,15 @@
             android:textSize="@dimen/detail_text_size"
             android:textFontWeight="1000"
             android:textColor="@color/list_text_color"/>
+
+        <ImageView
+            android:id="@+id/alarm_course_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="@dimen/list_fab_margin"
+            app:srcCompat="@drawable/ic_alarm_grey" />
     </LinearLayout>
 
     <LinearLayout

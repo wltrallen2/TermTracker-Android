@@ -174,7 +174,8 @@ public class AssessmentDetailActivity extends AppCompatActivity {
             String title = titleTextView.getText().toString();
             Date goalDate = DateConverter.parseStringToDate(goalTextView.getText().toString());
             Date dueDate = DateConverter.parseStringToDate((dueDateTextView.getText().toString()));
-            viewModel.saveAssessment(courseId, title, goalDate, dueDate);
+            // TODO: Replace false with isGoalAlarmActive
+            viewModel.saveAssessment(courseId, title, goalDate, false, dueDate);
         } catch (ParseException e) {
             // TODO: Handle this exception.
             e.printStackTrace();
