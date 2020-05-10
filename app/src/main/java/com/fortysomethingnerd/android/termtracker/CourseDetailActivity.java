@@ -208,6 +208,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         }
     }
 
+    // TODO: NEXT --> Something happened here in the refractor. The color is not toggling.
     @OnClick({R.id.alarm_course_start, R.id.alarm_course_end})
     public void toggleAlarmForView(View view) {
         ImageView alarmIcon = (ImageView) view;
@@ -219,7 +220,8 @@ public class CourseDetailActivity extends AppCompatActivity {
             Date date = DateConverter.parseStringToDate(alarmDateString);
             // Method will end here if dateString cannot be parsed.
 
-            if (isAlarmActiveForImageView(alarmIcon) && canSetAlarm(date))
+            // If the user pushed the button when it was NOT active, they want to activate the alarm.
+            if (!isAlarmActiveForImageView(alarmIcon) && canSetAlarm(date))
                 toggleOnAlarmForView(alarmIcon, date);
             // Else alarm is to be cleared because user clicked on colored icon to change to grey
             // or because date is out of range.
@@ -388,16 +390,12 @@ public class CourseDetailActivity extends AppCompatActivity {
     }
 
     private void setNotificationForStart(int courseId, String courseName, Date start) {
-        showToast("Setting alarm for start of course.");
-
         String title = getString(R.string.course_starting_today);
         String message = "Your WGU course, " + courseName + ", is set to begin on " + DateConverter.parseDateToString(start);
         setCourseNotification(courseId, title, start, message, COURSE_START_NOTIFICATION_ID_PREFIX);
     }
 
     private void setNotificationForEnd(int courseId, String courseName, Date end) {
-        showToast("Setting alarm for end of course.");
-
         String title = getString(R.string.course_ending_today);
         String message = "Your WGU course, " + courseName + ", is set to end on " + DateConverter.parseDateToString(end);
         setCourseNotification(courseId, title, end, message, COURSE_END_NOTIFICATION_ID_PREFIX);
@@ -430,7 +428,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         // Get toast message according to whether alarm was cleared by user request or
         // because it was not a future alarm.
         String toastMessage = canSetAlarm(date)
-                ? "Your alarm for  " + DateConverter.parseDateToString(date) + "has been cleared."
+                ? "Your alarm for  " + DateConverter.parseDateToString(date) + " has been cleared."
                 : "Alarms cannot be set for today or for dates in the past.";
         showToast(toastMessage);
     }
@@ -539,7 +537,6 @@ public class CourseDetailActivity extends AppCompatActivity {
             // Save the course and retrieve the new courseId from the future object.
             courseId = (int) viewModel.saveCourse(termId, title, start, isStartAlarmActive,
                     end, isEndAlarmActive, status, mentorName, mentorPhone, mentorEmail);
-            Toast.makeText(this, "Created/Inserted course Id " + courseId, Toast.LENGTH_LONG).show();
 
             // Set alarms for start and end times if applicable.
             if(isStartAlarmActive && canSetAlarm(start)) { setNotificationForStart(courseId, title, start); }
