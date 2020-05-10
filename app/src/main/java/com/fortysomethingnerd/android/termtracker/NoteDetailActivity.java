@@ -1,5 +1,7 @@
 package com.fortysomethingnerd.android.termtracker;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,9 +17,11 @@ import com.fortysomethingnerd.android.termtracker.database.NoteEntity;
 import com.fortysomethingnerd.android.termtracker.utilities.UtilityMethods;
 import com.fortysomethingnerd.android.termtracker.viewmodel.NoteDetailViewModel;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.COURSE_ID_KEY;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.EDITING_KEY;
@@ -30,6 +34,9 @@ public class NoteDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.note_detail_text_view)
     TextView textView;
+
+    @BindView(R.id.fab_share_note)
+    FloatingActionButton fabShareNote;
 
     private NoteDetailViewModel viewModel;
     private boolean isNewNote, isEdited;
@@ -137,5 +144,16 @@ public class NoteDetailActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putBoolean(EDITING_KEY, true);
         super.onSaveInstanceState(outState);
+    }
+
+    @OnClick(R.id.fab_share_note)
+    public void shareNoteClickHandler() {
+        Intent intentToSend = new Intent();
+        intentToSend.setAction(Intent.ACTION_SEND);
+        intentToSend.setType("message/rfc822");
+        intentToSend.putExtra(Intent.EXTRA_TEXT, textView.getText());
+
+        Intent intentToShare = Intent.createChooser(intentToSend, "Share Notes");
+        startActivity(intentToShare);
     }
 }

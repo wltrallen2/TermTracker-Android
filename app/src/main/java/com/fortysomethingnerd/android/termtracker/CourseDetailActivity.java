@@ -62,6 +62,7 @@ import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TEM
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TEMP_START_ALARM_STATE;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TEMP_START_DATE;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TERM_ID_KEY;
+import static com.fortysomethingnerd.android.termtracker.utilities.UtilityMethods.hideKeyboard;
 
 public class CourseDetailActivity extends AppCompatActivity {
     private CourseDetailViewModel viewModel;
@@ -186,7 +187,7 @@ public class CourseDetailActivity extends AppCompatActivity {
     }
 
     public void showDatePickerDialog(int textViewId) {
-        UtilityMethods.hideKeyboard(this);
+        hideKeyboard(this);
 
         DatePickerDialogFragment dialog = new DatePickerDialogFragment();
         dialog.setTextViewId(textViewId);
@@ -208,7 +209,6 @@ public class CourseDetailActivity extends AppCompatActivity {
         }
     }
 
-    // TODO: NEXT --> Something happened here in the refractor. The color is not toggling.
     @OnClick({R.id.alarm_course_start, R.id.alarm_course_end})
     public void toggleAlarmForView(View view) {
         ImageView alarmIcon = (ImageView) view;
@@ -245,9 +245,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         statusSpinner.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                //TODO: Can I move this out to a utility method?
-                InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                hideKeyboard(getApplicationContext(), v);
                 return false;
             }
         });
@@ -502,7 +500,7 @@ public class CourseDetailActivity extends AppCompatActivity {
      */
     private int saveAndReturn() {
         // Hide keyboard
-        UtilityMethods.hideKeyboard(this);
+        hideKeyboard(this);
 
         // Set courseId to -1, so that if the saveCourse method fails, method can return -1 as the indicator.
         int courseId = -1;

@@ -1,6 +1,8 @@
 package com.fortysomethingnerd.android.termtracker.utilities;
 
 import android.app.Activity;
+import android.app.Application;
+import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -18,6 +20,11 @@ public class UtilityMethods {
         if (view == null) {
             view = new View(activity);
         }
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    public static void hideKeyboard(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
