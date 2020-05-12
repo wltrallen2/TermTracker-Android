@@ -70,4 +70,7 @@
     <string name="course_tracker_notification_channel_id">course_tracker_notification_channel_id</string>
     <string name="course_starting_today">Course Starting Today</string>
     <string name="course_ending_today">Course Ending Today</string>
+    <string name="assessment_tracker_notification_channel_id">assessment_tracker_notification_channel_id</string>
+    <string name="assessment_tracker_notification_channel_description">Notification Channel for Assesment Reminders from WGU Student Term Tracker</string>
+    <string name="assessment_tracker_notification_channel_name">Assessment Reminders</string>
 </resources>

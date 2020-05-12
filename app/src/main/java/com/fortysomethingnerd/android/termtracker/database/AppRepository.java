@@ -136,7 +136,24 @@ public class AppRepository {
     }
 
     public CourseEntity getCourseById(int courseId) {
-        return mDb.courseDao().getCourseById(courseId);
+        Callable<CourseEntity> callable = new Callable<CourseEntity>() {
+            @Override
+            public CourseEntity call() throws Exception {
+                return mDb.courseDao().getCourseById(courseId);
+            }
+        };
+
+        Future<CourseEntity> future = executor.submit(callable);
+        CourseEntity course = null;
+        try {
+            course = future.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return course;
     }
 
     public long insertCourse(CourseEntity course) {
@@ -201,13 +218,29 @@ public class AppRepository {
         return mDb.assessmentDao().getAssessmentById(assessmentId);
     }
 
-    public void insertAssessment(AssessmentEntity assessment) {
-        executor.execute(new Runnable() {
+    public CourseEntity getCourseForAssessmentById(int assessmentId) {
+        return mDb.courseDao().getCourseById(getAssessementById(assessmentId).getCourseId());
+    }
+
+    public long insertAssessment(AssessmentEntity assessment) {
+        Callable<Long> callable = new Callable<Long>() {
             @Override
-            public void run() {
-                mDb.assessmentDao().insertAssessment(assessment);
+            public Long call() throws Exception {
+                return mDb.assessmentDao().insertAssessment(assessment);
             }
-        });
+        };
+
+        Future<Long> future = executor.submit(callable);
+        long assessmentId = -1;
+        try {
+            assessmentId = future.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        return assessmentId;
     }
 
     public void deleteAssessment(AssessmentEntity assessment) {

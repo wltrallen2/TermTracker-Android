@@ -20,9 +20,9 @@
         >
 
         <TextView
-            android:layout_width="@dimen/assessment_detail_label_width"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:text="@string/assessment_name_label"
             android:textAlignment="textEnd"
             android:gravity="end"
@@ -35,9 +35,9 @@
 
         <EditText
             android:id="@+id/assessment_detail_title_text_view"
-            android:layout_width="@dimen/assessment_detail_field_width"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2.25"
             android:hint="@string/tap_to_enter_assessment_name"
             android:layout_marginLeft="@dimen/detail_text_margin"
             android:layout_marginRight="@dimen/list_text_margin_horizontal"
@@ -56,14 +56,16 @@
         >
 
         <TextView
-            android:layout_width="@dimen/assessment_detail_label_width"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_weight="3"
             android:text="@string/goal_date_label"
             android:textAlignment="textEnd"
             android:gravity="end"
             android:layout_marginLeft="@dimen/list_text_margin_horizontal"
+            android:layout_marginStart="@dimen/list_text_margin_horizontal"
             android:layout_marginRight="@dimen/detail_text_margin"
+            android:layout_marginEnd="@dimen/detail_text_margin"
             android:layout_marginVertical="@dimen/detail_text_margin"
             android:textSize="@dimen/list_text_size"
             android:textFontWeight="1000"
@@ -71,16 +73,27 @@
 
         <TextView
             android:id="@+id/assessment_detail_goal_text_view"
-            android:layout_width="@dimen/assessment_detail_field_width"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Tap here to set the goal date."
+            android:layout_width="wrap_content"
+            android:layout_weight="2"
+            android:hint="@string/click_to_enter_date"
             android:layout_marginLeft="@dimen/detail_text_margin"
+            android:layout_marginStart="@dimen/detail_text_margin"
             android:layout_marginRight="@dimen/list_text_margin_horizontal"
+            android:layout_marginEnd="@dimen/list_text_margin_horizontal"
             android:layout_marginVertical="@dimen/detail_text_margin"
             android:textSize="@dimen/detail_text_size"
             android:textFontWeight="1000"
             android:textColor="@color/list_text_color" />
+
+        <ImageView
+            android:id="@+id/alarm_assessment_goal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".25"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="@dimen/list_fab_margin"
+            app:srcCompat="@drawable/ic_alarm_grey" />
 
     </LinearLayout>
 
@@ -92,9 +105,9 @@
         >
 
         <TextView
-            android:layout_width="@dimen/assessment_detail_label_width"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:text="@string/due_date_label"
             android:textAlignment="textEnd"
             android:gravity="end"
@@ -107,16 +120,25 @@
 
         <TextView
             android:id="@+id/assessment_detail_due_date_text_view"
-            android:layout_width="@dimen/assessment_detail_field_width"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/tap_here_to_set_the_due_date"
+            android:layout_weight="2"
+            android:hint="@string/click_to_enter_date"
             android:layout_marginLeft="@dimen/detail_text_margin"
             android:layout_marginRight="@dimen/list_text_margin_horizontal"
             android:layout_marginVertical="@dimen/detail_text_margin"
             android:textSize="@dimen/detail_text_size"
             android:textFontWeight="1000"
             android:textColor="@color/list_text_color" />
+
+        <ImageView
+            android:id="@+id/alarm_assessment_due"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight=".25"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="@dimen/list_fab_margin"
+            app:srcCompat="@drawable/ic_alarm_grey" />
 
     </LinearLayout>
 </LinearLayout>

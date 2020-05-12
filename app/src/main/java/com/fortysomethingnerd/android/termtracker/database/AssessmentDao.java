@@ -13,7 +13,7 @@ import java.util.List;
 public interface AssessmentDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertAssessment(AssessmentEntity assessment);
+    long insertAssessment(AssessmentEntity assessment);
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<AssessmentEntity> assessments);

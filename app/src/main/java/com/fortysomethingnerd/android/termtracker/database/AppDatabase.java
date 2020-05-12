@@ -9,7 +9,7 @@ import androidx.room.TypeConverters;
 
 @Database(entities = {TermEntity.class, CourseEntity.class,
         AssessmentEntity.class, NoteEntity.class},
-        version = 6, exportSchema = false)
+        version = 7, exportSchema = false)
 @TypeConverters({DateConverter.class, CourseStatusConverter.class})
 public abstract class AppDatabase extends RoomDatabase {
     public static final String DATABASE_NAME = "AppDatabase.db";

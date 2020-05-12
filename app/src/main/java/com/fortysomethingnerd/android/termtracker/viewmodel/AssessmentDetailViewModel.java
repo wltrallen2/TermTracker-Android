@@ -9,15 +9,20 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.fortysomethingnerd.android.termtracker.database.AppRepository;
 import com.fortysomethingnerd.android.termtracker.database.AssessmentEntity;
+import com.fortysomethingnerd.android.termtracker.database.CourseEntity;
 
 import java.util.Date;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class AssessmentDetailViewModel extends AndroidViewModel {
     private MutableLiveData<AssessmentEntity> liveAssessment = new MutableLiveData<>();
     private AppRepository appRepository;
-    private Executor executor = Executors.newSingleThreadExecutor();
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public AssessmentDetailViewModel(@NonNull Application application) {
         super(application);
@@ -38,24 +43,34 @@ public class AssessmentDetailViewModel extends AndroidViewModel {
         });
     }
 
-    public void saveAssessment(int courseId, String title, Date goalDate, boolean isGoalAlarmActive, Date dueDate) {
+    public long saveAssessment(int courseId, String title, Date goalDate, boolean isGoalAlarmActive, Date dueDate, boolean isDueAlarmActive) {
         AssessmentEntity assessment = liveAssessment.getValue();
         if (assessment == null) {
 
             if (TextUtils.isEmpty(title) || goalDate == null || dueDate == null
-                || courseId < 1) { return; }
+                || courseId < 1) { return -1; }
 
-            assessment = new AssessmentEntity(courseId, title.trim(), goalDate, isGoalAlarmActive, dueDate);
+            assessment = new AssessmentEntity(courseId, title.trim(), goalDate, isGoalAlarmActive, dueDate, isDueAlarmActive);
         } else {
             assessment.setTitle(title);
             assessment.setGoalDate(goalDate);
+            assessment.setGoalAlarmActive(isGoalAlarmActive);
             assessment.setDueDate(dueDate);
+            assessment.setDueAlarmActive(isDueAlarmActive);
         }
 
-        appRepository.insertAssessment(assessment);
+        return appRepository.insertAssessment(assessment);
     }
 
     public void deleteAssessment() {
         appRepository.deleteAssessment(liveAssessment.getValue());
+    }
+
+    public CourseEntity getCourseForAssessment() {
+        return appRepository.getCourseById(liveAssessment.getValue().getCourseId());
+    }
+
+    public CourseEntity getCourseForCourseId(int courseId) {
+        return appRepository.getCourseById(courseId);
     }
 }

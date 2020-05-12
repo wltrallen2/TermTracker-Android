@@ -48,9 +48,9 @@ public class SampleData {
 
     public static List<AssessmentEntity> getAssessments(int courseId) {
         List<AssessmentEntity> assessments = new ArrayList<>();
-        assessments.add(new AssessmentEntity(courseId, "Test #1", getDate(60), false, getDate(120)));
-        assessments.add(new AssessmentEntity(courseId, "Test #2", getDate(90), false, getDate(150)));
-        assessments.add(new AssessmentEntity(courseId, "Project: Website", getDate(120), false, getDate(180)));
+        assessments.add(new AssessmentEntity(courseId, "Test #1", getDate(60), false, getDate(120), false));
+        assessments.add(new AssessmentEntity(courseId, "Test #2", getDate(90), false, getDate(150), false));
+        assessments.add(new AssessmentEntity(courseId, "Project: Website", getDate(120), false, getDate(180), false));
         return assessments;
     }
 

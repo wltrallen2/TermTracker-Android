@@ -84,7 +84,6 @@
             android:textSize="@dimen/detail_text_size"
             android:textFontWeight="1000"
             android:textColor="@color/list_text_color"/>
-
         <ImageView
             android:id="@+id/alarm_course_start"
             android:layout_width="wrap_content"

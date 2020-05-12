@@ -54,6 +54,7 @@ import static com.fortysomethingnerd.android.termtracker.utilities.Constants.NOT
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.NOTIFICATION_HOUR;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.NOTIFICATION_ID;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.NOTIFICATION_MINUTE;
+import static com.fortysomethingnerd.android.termtracker.utilities.Constants.NOTIFICATION_PENDING_INTENT_KEY;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.NOTIFICATION_SECOND;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.NOTIFICATION_TEXT_KEY;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.NOTIFICATION_TITLE_KEY;
@@ -368,9 +369,10 @@ public class CourseDetailActivity extends AppCompatActivity {
             intent.putExtra(NOTIFICATION_ID, notificationId);
             intent.putExtra(NOTIFICATION_TITLE_KEY, title);
             intent.putExtra(NOTIFICATION_TEXT_KEY, message);
-            intent.putExtra(Constants.NOTIFICATION_PENDING_INTENT_KEY, pendingIntentForContent);
+            intent.putExtra(NOTIFICATION_PENDING_INTENT_KEY, pendingIntentForContent);
 
-            PendingIntent pendingIntentForBroadcast = PendingIntent.getBroadcast(CourseDetailActivity.this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            PendingIntent pendingIntentForBroadcast = PendingIntent
+                    .getBroadcast(CourseDetailActivity.this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, notificationWhen, pendingIntentForBroadcast);
@@ -528,7 +530,7 @@ public class CourseDetailActivity extends AppCompatActivity {
             boolean isStartAlarmActive = isStartAlarmActive();
             boolean isEndAlarmActive = isEndAlarmActive();
 
-            // Retrieve the term id from extras and the courseId, if one exists.
+            // Retrieve the term id from extras.
             Bundle extras = getIntent().getExtras();
             int termId = extras.getInt(TERM_ID_KEY);
 

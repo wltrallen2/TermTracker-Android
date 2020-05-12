@@ -5,6 +5,8 @@ import java.util.Calendar;
 public class Constants {
 
     public static final String ASSESSMENT_ID_KEY = "assessment_id_key";
+    public static final String ASSESSMENT_DUE_NOTIFICATION_ID_PREFIX = "2100";
+    public static final String ASSESSMENT_GOAL_NOTIFICATION_ID_PREFIX = "2000";
     public static final String COURSE_ID_KEY = "course_id_key";
     public static final String COURSE_START_NOTIFICATION_ID_PREFIX = "1000";
     public static final String COURSE_END_NOTIFICATION_ID_PREFIX = "1100";
@@ -30,4 +32,6 @@ public class Constants {
     public static final String TEMP_END_ALARM_STATE = "temp_end_alarm_state";
     public static final String TEMP_END_DATE  = "temp_end_date";
     public static final CharSequence STATUS_SPINNER_PROMPT = "Choose course status.";
+    public static final String TEMP_GOAL_ALARM_STATE = "temp_goal_alarm_state";
+    public static final String TEMP_DUE_ALARM_STATE = "temp_due_alarm_state";
 }

@@ -16,27 +16,30 @@ public class AssessmentEntity {
     private Date goalDate;
     private boolean isGoalAlarmActive;
     private Date dueDate;
+    private boolean isDueAlarmActive;
 
     @Ignore
     public AssessmentEntity() {
     }
 
-    public AssessmentEntity(int id, int courseId, String title, Date goalDate, boolean isGoalAlarmActive, Date dueDate) {
+    public AssessmentEntity(int id, int courseId, String title, Date goalDate, boolean isGoalAlarmActive, Date dueDate, boolean isDueAlarmActive) {
         this.id = id;
         this.courseId = courseId;
         this.title = title;
         this.goalDate = goalDate;
         this.isGoalAlarmActive = isGoalAlarmActive;
         this.dueDate = dueDate;
+        this.isDueAlarmActive = isDueAlarmActive;
     }
 
     @Ignore
-    public AssessmentEntity(int courseId, String title, Date goalDate, boolean isGoalAlarmActive, Date dueDate) {
+    public AssessmentEntity(int courseId, String title, Date goalDate, boolean isGoalAlarmActive, Date dueDate, boolean isDueAlarmActive) {
         this.courseId = courseId;
         this.title = title;
         this.goalDate = goalDate;
         this.isGoalAlarmActive = isGoalAlarmActive;
         this.dueDate = dueDate;
+        this.isDueAlarmActive = isDueAlarmActive;
     }
 
     public int getId() {
@@ -87,6 +90,14 @@ public class AssessmentEntity {
         this.dueDate = dueDate;
     }
 
+    public boolean isDueAlarmActive() {
+        return isDueAlarmActive;
+    }
+
+    public void setDueAlarmActive(boolean dueAlarmActive) {
+        isDueAlarmActive = dueAlarmActive;
+    }
+
     @Override
     public String toString() {
         return "AssessmentEntity{" +
@@ -96,6 +107,7 @@ public class AssessmentEntity {
                 ", goalDate=" + goalDate +
                 ", isGoalAlarmActive=" + isGoalAlarmActive +
                 ", dueDate=" + dueDate +
+                ", isDueAlarmActive=" + isDueAlarmActive +
                 '}';
     }
 }

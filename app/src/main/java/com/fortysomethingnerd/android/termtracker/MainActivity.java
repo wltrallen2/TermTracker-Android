@@ -58,12 +58,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void createNotificationChannels() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String channel_id = getString(R.string.course_tracker_notification_channel_id);
-            CharSequence name = getString(R.string.course_reminders_notification_channel_name);
-            String description = getString(R.string.course_reminders_notification_channel_description);
-            int importance = NotificationManager.IMPORTANCE_HIGH;
+        // Create notification channel for course reminders.
+        String channel_id = getString(R.string.course_tracker_notification_channel_id);
+        CharSequence name = getString(R.string.course_reminders_notification_channel_name);
+        String description = getString(R.string.course_reminders_notification_channel_description);
+        int importance = NotificationManager.IMPORTANCE_HIGH;
 
+        createNotificationChannel(channel_id, name, description, importance);
+
+        // Create notification channel for assessment reminders.
+        channel_id = getString(R.string.assessment_tracker_notification_channel_id);
+        name = getString(R.string.assessment_tracker_notification_channel_name);
+        description = getString(R.string.assessment_tracker_notification_channel_description);
+
+        createNotificationChannel(channel_id, name, description, importance);
+    }
+
+    private void createNotificationChannel(String channel_id, CharSequence name, String description, int importance) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(channel_id, name, importance);
             channel.setDescription(description);
 
