@@ -140,7 +140,7 @@
         android:layout_margin="@dimen/button_margin_horizontal"
         android:textSize="@dimen/button_text_size"
         android:textColor="@color/white"
-        android:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimary"
         android:text="@string/see_courses"
         android:onClick="showCourseActivity"/>
 

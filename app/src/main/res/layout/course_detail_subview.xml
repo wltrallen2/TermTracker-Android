@@ -304,7 +304,7 @@
         android:layout_margin="@dimen/button_margin_horizontal"
         android:textSize="@dimen/button_text_size"
         android:textColor="@color/white"
-        android:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimary"
         android:text="@string/see_edit_assessments"
         />
 
@@ -316,7 +316,7 @@
         android:layout_marginVertical="@dimen/button_margin_vertical"
         android:textSize="@dimen/button_text_size"
         android:textColor="@color/white"
-        android:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimary"
         android:text="@string/see_edit_course_notes"
         />
 
