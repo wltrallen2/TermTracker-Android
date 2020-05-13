@@ -483,7 +483,7 @@ public class CourseDetailActivity extends AppCompatActivity {
         } catch (NullPointerException e) {
             // If liveCourse does not exist, attempt to retrieve courseId from intent extras.
             Bundle extras = getIntent().getExtras();
-            if(extras != null && courseId == -1) {
+            if(extras.containsKey(COURSE_ID_KEY) && courseId == -1) {
                 courseId = extras.getInt(COURSE_ID_KEY);
             }
         }

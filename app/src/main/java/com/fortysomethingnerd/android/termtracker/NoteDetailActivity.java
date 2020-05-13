@@ -62,6 +62,7 @@ public class NoteDetailActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         setOptionsForNoteActivity();
+        UtilityMethods.hideKeyboard(this);
         super.onResume();
     }
 
