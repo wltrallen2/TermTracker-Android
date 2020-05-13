@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.TaskStackBuilder;
 import androidx.lifecycle.Observer;
@@ -276,8 +278,18 @@ public class AssessmentDetailActivity extends AppCompatActivity {
     }
 
     private boolean isActiveForImageView(ImageView view) {
-        return view.getDrawable().getConstantState()
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+        }
+
+        boolean isActive = view.getDrawable().getConstantState()
                 == getResources().getDrawable(R.drawable.ic_alarm_primary).getConstantState();
+
+        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
+            AppCompatDelegate.setCompatVectorFromResourcesEnabled(false);
+        }
+
+        return isActive;
     }
 
     private void setAssessmentNotification(int assessmentId, String title, Date date, String message, String notificationIdPrefix) {
