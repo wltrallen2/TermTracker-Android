@@ -77,6 +77,7 @@ public class AssessmentDetailActivity extends AppCompatActivity {
 
     private AssessmentDetailViewModel viewModel;
     private boolean isNewAssessment, isEdited;
+    private boolean isGoalAlarmSet, isDueAlarmSet;
 
     /*******************************************************************************
      * LIFE CYCLE & OVERRIDDEN SUPERCLASS METHODS
@@ -143,8 +144,8 @@ public class AssessmentDetailActivity extends AppCompatActivity {
         outState.putBoolean(EDITING_KEY, true);
         outState.putString(TEMP_GOAL_DATE, goalTextView.getText().toString());
         outState.putString(TEMP_DUE_DATE, dueDateTextView.getText().toString());
-        outState.putBoolean(TEMP_GOAL_ALARM_STATE, isActiveForImageView(goalAlarmIcon));
-        outState.putBoolean(TEMP_DUE_ALARM_STATE, isActiveForImageView(dueAlarmIcon));
+        outState.putBoolean(TEMP_GOAL_ALARM_STATE, isGoalAlarmSet);
+        outState.putBoolean(TEMP_DUE_ALARM_STATE, isDueAlarmSet);
         super.onSaveInstanceState(outState);
     }
 
@@ -256,14 +257,41 @@ public class AssessmentDetailActivity extends AppCompatActivity {
 
         Intent resultIntent = new Intent(this, AssessmentDetailActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addNextIntentWithParentStack(resultIntent);
-        stackBuilder.editIntentAt(1).putExtra(TERM_ID_KEY, termId);
-        stackBuilder.editIntentAt(2).putExtra(TERM_ID_KEY, termId);
-        stackBuilder.editIntentAt(3).putExtra(TERM_ID_KEY, termId);
-        stackBuilder.editIntentAt(3).putExtra(COURSE_ID_KEY, courseId);
-        stackBuilder.editIntentAt(4).putExtra(COURSE_ID_KEY, courseId);
-        stackBuilder.editIntentAt(5).putExtra(ASSESSMENT_ID_KEY, assessmentId);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+        stackBuilder.addNextIntent(mainIntent);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        Intent termDetailIntent = new Intent(getApplicationContext(), TermDetailActivity.class);
+        termDetailIntent.putExtra(TERM_ID_KEY, termId);
+        stackBuilder.addNextIntent(termDetailIntent);
+
+        Intent courseListIntent = new Intent(getApplicationContext(), CourseListActivity.class);
+        courseListIntent.putExtra(TERM_ID_KEY, termId);
+        stackBuilder.addNextIntent(courseListIntent);
+
+        Intent courseDetailIntent = new Intent(getApplicationContext(), CourseDetailActivity.class);
+        courseDetailIntent.setAction("course_intent_action_" + courseId);
+        courseDetailIntent.putExtra(TERM_ID_KEY, termId);
+        courseDetailIntent.putExtra(COURSE_ID_KEY, courseId);
+        stackBuilder.addNextIntent(courseDetailIntent);
+
+        Intent assessmentListIntent = new Intent(getApplicationContext(), AssessmentListActivity.class);
+        assessmentListIntent.putExtra(COURSE_ID_KEY, courseId);
+        stackBuilder.addNextIntent(assessmentListIntent);
+
+        Intent assessmentDetailIntent = new Intent(getApplicationContext(), AssessmentDetailActivity.class);
+        assessmentDetailIntent.putExtra(COURSE_ID_KEY, courseId);
+        assessmentDetailIntent.putExtra(ASSESSMENT_ID_KEY, assessmentId);
+        stackBuilder.addNextIntent(assessmentDetailIntent);
+
+        // In older APIs, there is a bug that does not allow the top intent to receive its extras;
+        // therefore, to bypass this bug, here is included an extra top intent that includes code
+        // to automatically trigger the 'onBackPressed()' method if there are no extras in the Bundle.
+        Intent dummyTopIntent = new Intent(getApplicationContext(), NoteListActivity.class);
+        stackBuilder.addNextIntent(dummyTopIntent);
+
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(assessmentId, PendingIntent.FLAG_UPDATE_CURRENT);
         return resultPendingIntent;
     }
 
@@ -278,18 +306,9 @@ public class AssessmentDetailActivity extends AppCompatActivity {
     }
 
     private boolean isActiveForImageView(ImageView view) {
-        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-        }
-
-        boolean isActive = view.getDrawable().getConstantState()
-                == getResources().getDrawable(R.drawable.ic_alarm_primary).getConstantState();
-
-        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-            AppCompatDelegate.setCompatVectorFromResourcesEnabled(false);
-        }
-
-        return isActive;
+        if(view.equals(goalAlarmIcon))
+            return isGoalAlarmSet;
+        else return isDueAlarmSet;
     }
 
     private void setAssessmentNotification(int assessmentId, String title, Date date, String message, String notificationIdPrefix) {
@@ -321,6 +340,10 @@ public class AssessmentDetailActivity extends AppCompatActivity {
         if(isAlarmSet)
             view.setImageResource(R.drawable.ic_alarm_primary);
         else view.setImageResource(R.drawable.ic_alarm_grey);
+
+        if(view.equals(goalAlarmIcon))
+            isGoalAlarmSet = isAlarmSet;
+        else isDueAlarmSet = isAlarmSet;
     }
 
     private void setNotificationForDue(int assessmentId, String courseName, String assessmentName, Date date) {

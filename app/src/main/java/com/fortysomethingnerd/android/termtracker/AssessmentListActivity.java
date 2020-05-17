@@ -56,7 +56,9 @@ public class AssessmentListActivity extends AppCompatActivity {
 
     private void setCourseId() {
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
+        if (extras == null) {
+            onBackPressed();
+        } else {
             courseId = extras.getInt(COURSE_ID_KEY);
         }
     }

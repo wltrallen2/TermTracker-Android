@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.LogPrinter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -98,6 +99,8 @@ public class CourseDetailActivity extends AppCompatActivity {
     @BindView(R.id.course_detail_memail_text_view)
     TextView mentorEmailTextView;
 
+    private boolean isStartAlarmIconActive, isEndAlarmIconActive;
+
 
     /*******************************************************************************
      * LIFE CYCLE & OVERRIDDEN SUPERCLASS METHODS
@@ -124,6 +127,11 @@ public class CourseDetailActivity extends AppCompatActivity {
 
         initStatusSpinner();
         initViewModel();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
     }
 
     @Override
@@ -170,8 +178,8 @@ public class CourseDetailActivity extends AppCompatActivity {
         outState.putBoolean(Constants.EDITING_KEY, true);
         outState.putString(TEMP_START_DATE, startTextView.getText().toString());
         outState.putString(TEMP_END_DATE, endTextView.getText().toString());
-        outState.putBoolean(TEMP_START_ALARM_STATE, isStartAlarmActive());
-        outState.putBoolean((TEMP_END_ALARM_STATE), isEndAlarmActive());
+        outState.putBoolean(TEMP_START_ALARM_STATE, isStartAlarmIconActive);
+        outState.putBoolean((TEMP_END_ALARM_STATE), isEndAlarmIconActive);
         super.onSaveInstanceState(outState);
     }
 
@@ -325,14 +333,34 @@ public class CourseDetailActivity extends AppCompatActivity {
     private PendingIntent createPendingIntentForThisCourse(int courseId) {
         int termId = getIntent().getExtras().getInt(TERM_ID_KEY);
 
-        Intent resultIntent = new Intent(this, CourseDetailActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addNextIntentWithParentStack(resultIntent);
-        stackBuilder.editIntentAt(1).putExtra(TERM_ID_KEY, termId);
-        stackBuilder.editIntentAt(2).putExtra(TERM_ID_KEY, termId);
-        stackBuilder.editIntentAt(3).putExtra(TERM_ID_KEY, termId);
-        stackBuilder.editIntentAt(3).putExtra(COURSE_ID_KEY, courseId);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+        stackBuilder.addNextIntent(mainIntent);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        Intent termDetailIntent = new Intent(getApplicationContext(), TermDetailActivity.class);
+        termDetailIntent.putExtra(TERM_ID_KEY, termId);
+        stackBuilder.addNextIntent(termDetailIntent);
+
+        Intent courseListIntent = new Intent(getApplicationContext(), CourseListActivity.class);
+        courseListIntent.putExtra(TERM_ID_KEY, termId);
+        stackBuilder.addNextIntent(courseListIntent);
+
+        Intent courseDetailIntent = new Intent(getApplicationContext(), CourseDetailActivity.class);
+        courseDetailIntent.setAction("course_intent_action_" + courseId);
+        courseDetailIntent.putExtra(TERM_ID_KEY, termId);
+        courseDetailIntent.putExtra(COURSE_ID_KEY, courseId);
+        stackBuilder.addNextIntent(courseDetailIntent);
+
+        // In older APIs, there is a bug that does not allow the top intent to receive its extras;
+        // therefore, to bypass this bug, here is included an extra top intent that includes code
+        // to automatically trigger the 'onBackPressed()' method if there are no extras in the Bundle.
+        Intent assessmentListIntent = new Intent(getApplicationContext(), AssessmentListActivity.class);
+        stackBuilder.addNextIntent(assessmentListIntent);
+
+        Intent[] intents = stackBuilder.getIntents();
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(courseId, PendingIntent.FLAG_UPDATE_CURRENT);
         return resultPendingIntent;
     }
 
@@ -347,26 +375,8 @@ public class CourseDetailActivity extends AppCompatActivity {
     }
 
     private boolean isAlarmActiveForImageView(@NotNull ImageView view) {
-        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-            AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-        }
-
-        boolean isActive = view.getDrawable().getConstantState()
-                == getResources().getDrawable(R.drawable.ic_alarm_primary).getConstantState();
-
-        if(Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP) {
-            AppCompatDelegate.setCompatVectorFromResourcesEnabled(false);
-        }
-
-        return isActive;
-    }
-
-    private boolean isStartAlarmActive() {
-        return isAlarmActiveForImageView(startAlarmIcon);
-    }
-
-    private boolean isEndAlarmActive() {
-        return isAlarmActiveForImageView(endAlarmIcon);
+        if(view.equals(startAlarmIcon)) return isStartAlarmIconActive;
+        else return isEndAlarmIconActive;
     }
 
     private void setCourseNotification(int courseId, String title, Date when, String message, String notificationIdPrefix) {
@@ -384,7 +394,7 @@ public class CourseDetailActivity extends AppCompatActivity {
             intent.putExtra(NOTIFICATION_PENDING_INTENT_KEY, pendingIntentForContent);
 
             PendingIntent pendingIntentForBroadcast = PendingIntent
-                    .getBroadcast(CourseDetailActivity.this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    .getBroadcast(this, notificationId, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
             AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, notificationWhen, pendingIntentForBroadcast);
@@ -394,11 +404,13 @@ public class CourseDetailActivity extends AppCompatActivity {
     }
 
     private void setImageForView(ImageView imageView, boolean isSet) {
-        if(isSet) {
+        if(isSet)
             imageView.setImageResource(R.drawable.ic_alarm_primary);
-        } else {
-            imageView.setImageResource(R.drawable.ic_alarm_grey);
-        }
+        else imageView.setImageResource(R.drawable.ic_alarm_grey);
+
+        if(imageView.equals(startAlarmIcon))
+            isStartAlarmIconActive = isSet;
+        else isEndAlarmIconActive = isSet;
     }
 
     private void setNotificationForStart(int courseId, String courseName, Date start) {
@@ -538,21 +550,17 @@ public class CourseDetailActivity extends AppCompatActivity {
             String statusString = CourseStatus.getCourseStatusStrings()[statusIndex];
             CourseStatus status = CourseStatus.get(statusString);
 
-            // Retrieve booleans from alarm icons
-            boolean isStartAlarmActive = isStartAlarmActive();
-            boolean isEndAlarmActive = isEndAlarmActive();
-
             // Retrieve the term id from extras.
             Bundle extras = getIntent().getExtras();
             int termId = extras.getInt(TERM_ID_KEY);
 
             // Save the course and retrieve the new courseId from the future object.
-            courseId = (int) viewModel.saveCourse(termId, title, start, isStartAlarmActive,
-                    end, isEndAlarmActive, status, mentorName, mentorPhone, mentorEmail);
+            courseId = (int) viewModel.saveCourse(termId, title, start, isStartAlarmIconActive,
+                    end, isEndAlarmIconActive, status, mentorName, mentorPhone, mentorEmail);
 
             // Set alarms for start and end times if applicable.
-            if(isStartAlarmActive && canSetAlarm(start)) { setNotificationForStart(courseId, title, start); }
-            if(isEndAlarmActive && canSetAlarm(end)) { setNotificationForEnd(courseId, title, end); }
+            if(isStartAlarmIconActive && canSetAlarm(start)) { setNotificationForStart(courseId, title, start); }
+            if(isEndAlarmIconActive && canSetAlarm(end)) { setNotificationForEnd(courseId, title, end); }
 
             // Load the course by courseId into the viewModel.
             viewModel.loadCourse(courseId);

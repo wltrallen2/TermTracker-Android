@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -19,6 +20,7 @@ public class MyReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.i(LOG_TAG, "onReceive: ");
 
         String channel_id = intent.getStringExtra(NOTIFICATION_CHANNEL_ID_KEY);
         int notificationId = intent.getIntExtra(NOTIFICATION_ID, 0);
@@ -29,7 +31,7 @@ public class MyReceiver extends BroadcastReceiver {
         Toast.makeText(context, text + " (Notification ID " + notificationId + ")", Toast.LENGTH_LONG).show();
 
         Notification notification = new NotificationCompat.Builder(context, channel_id)
-                .setSmallIcon(R.drawable.ic_alarm_black)
+                .setSmallIcon(R.drawable.ic_alarm_notification)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentTitle(title)
                 .setContentText(text)
