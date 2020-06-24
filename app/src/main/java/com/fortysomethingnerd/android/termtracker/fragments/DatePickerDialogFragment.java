@@ -42,7 +42,8 @@ public class DatePickerDialogFragment extends DialogFragment
                         Date date = DateConverter.parseStringToDate(dateString);
                         calendar.setTime(date);
                     } catch (Exception ex) {
-                        // TODO: Handle this exception
+                        // Exception can be ignored because the datePickerDialogue will automatically
+                        // set the date to the current date if the dateString is unable to be parsed.
                         Log.i(LOG_TAG, "onCreateDialog: " + ex);
                     }
                 }

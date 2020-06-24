@@ -4,6 +4,8 @@ import androidx.room.Entity;
 import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
+import com.fortysomethingnerd.android.termtracker.utilities.AssessmentType;
+
 import java.util.Date;
 
 @Entity(tableName = "assessments")
@@ -13,6 +15,7 @@ public class AssessmentEntity {
     private int id;
     private int courseId;
     private String title;
+    private AssessmentType type;
     private Date goalDate;
     private boolean isGoalAlarmActive;
     private Date dueDate;
@@ -22,10 +25,11 @@ public class AssessmentEntity {
     public AssessmentEntity() {
     }
 
-    public AssessmentEntity(int id, int courseId, String title, Date goalDate, boolean isGoalAlarmActive, Date dueDate, boolean isDueAlarmActive) {
+    public AssessmentEntity(int id, int courseId, String title, AssessmentType type, Date goalDate, boolean isGoalAlarmActive, Date dueDate, boolean isDueAlarmActive) {
         this.id = id;
         this.courseId = courseId;
         this.title = title;
+        this.type = type;
         this.goalDate = goalDate;
         this.isGoalAlarmActive = isGoalAlarmActive;
         this.dueDate = dueDate;
@@ -33,9 +37,10 @@ public class AssessmentEntity {
     }
 
     @Ignore
-    public AssessmentEntity(int courseId, String title, Date goalDate, boolean isGoalAlarmActive, Date dueDate, boolean isDueAlarmActive) {
+    public AssessmentEntity(int courseId, String title, AssessmentType type, Date goalDate, boolean isGoalAlarmActive, Date dueDate, boolean isDueAlarmActive) {
         this.courseId = courseId;
         this.title = title;
+        this.type = type;
         this.goalDate = goalDate;
         this.isGoalAlarmActive = isGoalAlarmActive;
         this.dueDate = dueDate;
@@ -64,6 +69,14 @@ public class AssessmentEntity {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public AssessmentType getType() {
+        return type;
+    }
+
+    public void setType(AssessmentType type) {
+        this.type = type;
     }
 
     public Date getGoalDate() {
@@ -104,6 +117,7 @@ public class AssessmentEntity {
                 "id=" + id +
                 ", courseId=" + courseId +
                 ", title='" + title + '\'' +
+                ", type=" + type +
                 ", goalDate=" + goalDate +
                 ", isGoalAlarmActive=" + isGoalAlarmActive +
                 ", dueDate=" + dueDate +

@@ -56,6 +56,40 @@
         >
 
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="3"
+            android:text="@string/assessment_type_label"
+            android:textAlignment="textEnd"
+            android:gravity="end"
+            android:layout_marginLeft="@dimen/list_text_margin_horizontal"
+            android:layout_marginRight="@dimen/detail_text_margin"
+            android:layout_marginVertical="@dimen/detail_text_margin"
+            android:textSize="@dimen/list_text_size"
+            android:textFontWeight="1000"
+            android:textColor="@color/list_text_color" />
+
+        <Spinner
+            android:id="@+id/assessment_type_spinner"
+            android:layout_width="85pt"
+            android:layout_height="wrap_content"
+            android:layout_weight="2.5"
+            android:layout_marginLeft="@dimen/list_text_margin_horizontal"
+            android:layout_marginStart="@dimen/list_text_margin_horizontal"
+            android:layout_marginRight="@dimen/detail_text_margin"
+            android:layout_marginEnd="@dimen/detail_text_margin"
+            android:layout_marginVertical="@dimen/detail_text_margin" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        >
+
+        <TextView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_weight="3"

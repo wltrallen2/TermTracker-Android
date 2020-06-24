@@ -47,7 +47,8 @@ public class AssessmentsAdapter extends RecyclerView.Adapter<AssessmentsAdapter.
     @Override
     public void onBindViewHolder(@NonNull AssessmentsAdapter.ViewHolder holder, int position) {
         AssessmentEntity assessment = assessments.get(position);
-        holder.titleTextView.setText(assessment.getTitle().toString());
+        holder.titleTextView.setText(assessment.getTitle());
+        holder.typeTextView.setText(assessment.getType().toString() + " Assessment");
 
         Spanned goalText = FormattedText.getHTMLText("Goal Date: ",
                 DateConverter.parseDateToString(assessment.getGoalDate()));
@@ -76,6 +77,9 @@ public class AssessmentsAdapter extends RecyclerView.Adapter<AssessmentsAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.assessment_title_textView)
         TextView titleTextView;
+
+        @BindView(R.id.assesment_type_textView)
+        TextView typeTextView;
 
         @BindView(R.id.assessment_goal_textView)
         TextView goalTextView;

@@ -73,4 +73,8 @@
     <string name="assessment_tracker_notification_channel_id">assessment_tracker_notification_channel_id</string>
     <string name="assessment_tracker_notification_channel_description">Notification Channel for Assesment Reminders from WGU Student Term Tracker</string>
     <string name="assessment_tracker_notification_channel_name">Assessment Reminders</string>
+    <string name="error_complete_course_details">Please complete all fields before adding assessments or notes.</string>
+    <string name="error_complete_term_details">Please complete the details for the term before adding courses.</string>
+    <string name="assessment_type_label">Assessment Type:</string>
+    <string name="assessment_type">Assessment Type</string>
 </resources>

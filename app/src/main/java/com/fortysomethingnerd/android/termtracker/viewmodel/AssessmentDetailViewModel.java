@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.fortysomethingnerd.android.termtracker.database.AppRepository;
 import com.fortysomethingnerd.android.termtracker.database.AssessmentEntity;
 import com.fortysomethingnerd.android.termtracker.database.CourseEntity;
+import com.fortysomethingnerd.android.termtracker.utilities.AssessmentType;
 
 import java.util.Date;
 import java.util.concurrent.Callable;
@@ -43,16 +44,17 @@ public class AssessmentDetailViewModel extends AndroidViewModel {
         });
     }
 
-    public long saveAssessment(int courseId, String title, Date goalDate, boolean isGoalAlarmActive, Date dueDate, boolean isDueAlarmActive) {
+    public long saveAssessment(int courseId, String title, AssessmentType type, Date goalDate, boolean isGoalAlarmActive, Date dueDate, boolean isDueAlarmActive) {
         AssessmentEntity assessment = liveAssessment.getValue();
         if (assessment == null) {
 
             if (TextUtils.isEmpty(title) || goalDate == null || dueDate == null
                 || courseId < 1) { return -1; }
 
-            assessment = new AssessmentEntity(courseId, title.trim(), goalDate, isGoalAlarmActive, dueDate, isDueAlarmActive);
+            assessment = new AssessmentEntity(courseId, title.trim(), type, goalDate, isGoalAlarmActive, dueDate, isDueAlarmActive);
         } else {
             assessment.setTitle(title);
+            assessment.setType(type);
             assessment.setGoalDate(goalDate);
             assessment.setGoalAlarmActive(isGoalAlarmActive);
             assessment.setDueDate(dueDate);

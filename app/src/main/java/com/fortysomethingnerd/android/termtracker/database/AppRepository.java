@@ -156,7 +156,7 @@ public class AppRepository {
         return course;
     }
 
-    public long insertCourse(CourseEntity course) {
+    public long insertCourse(CourseEntity course) throws ExecutionException, InterruptedException {
         Callable<Long> callable = new Callable<Long>() {
             @Override
             public Long call() throws Exception {
@@ -166,16 +166,7 @@ public class AppRepository {
 
         Future<Long> future = executor.submit(callable);
         long courseId = -1;
-        try {
             courseId = future.get();
-        } catch (ExecutionException e) {
-            // TODO: Handle this exception.
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            // TODO: Handle this exception.
-            e.printStackTrace();
-        }
-
         return courseId;
     }
 
@@ -300,7 +291,7 @@ public class AppRepository {
         });
     }
 
-    public boolean isSafeToDeleteTerm(TermEntity term) {
+    public boolean isSafeToDeleteTerm(TermEntity term) throws ExecutionException, InterruptedException {
         Callable<Boolean> callable = new Callable<Boolean>() {
             @Override
             public Boolean call() throws Exception {
@@ -312,15 +303,7 @@ public class AppRepository {
         Future<Boolean> future = executor.submit(callable);
 
         boolean safeToDelete = false;
-        try {
             safeToDelete = future.get();
-        } catch (ExecutionException e) {
-            // TODO: Handle these exceptions.
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
         return safeToDelete;
     }
 }

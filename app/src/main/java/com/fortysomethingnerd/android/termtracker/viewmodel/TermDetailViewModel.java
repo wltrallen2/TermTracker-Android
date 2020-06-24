@@ -12,6 +12,7 @@ import com.fortysomethingnerd.android.termtracker.database.AppRepository;
 import com.fortysomethingnerd.android.termtracker.database.TermEntity;
 
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -64,7 +65,7 @@ public class TermDetailViewModel extends AndroidViewModel {
         mRepository.deleteTerm(mLiveTerm.getValue());
     }
 
-    public boolean isSafeToDelete() {
+    public boolean isSafeToDelete() throws ExecutionException, InterruptedException {
         return mRepository.isSafeToDeleteTerm(mLiveTerm.getValue());
     }
 }

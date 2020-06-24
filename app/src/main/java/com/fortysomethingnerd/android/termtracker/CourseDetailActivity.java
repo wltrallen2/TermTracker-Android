@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
@@ -43,6 +45,7 @@ import org.jetbrains.annotations.NotNull;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -216,8 +219,21 @@ public class CourseDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         } else {
-            showToast("Please complete all fields before adding assessments or notes.");
+            showSegueErrorDialog();
         }
+    }
+
+    private void showSegueErrorDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.error_complete_course_details);
+        builder.setNeutralButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
     @OnClick({R.id.alarm_course_start, R.id.alarm_course_end})
@@ -568,6 +584,12 @@ public class CourseDetailActivity extends AppCompatActivity {
         } catch (ParseException e) {
             Log.i(LOG_TAG, "Error in CourseDetailActivity.saveAndReturn: " +
                     "one of the date strings failed to parse: " + e.toString());
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            showToast("There was an error retrieving courseId information.");
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            showToast("There was an error retrieving courseId information.");
             e.printStackTrace();
         }
 

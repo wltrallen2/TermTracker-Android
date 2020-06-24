@@ -13,6 +13,7 @@ import com.fortysomethingnerd.android.termtracker.database.CourseEntity;
 import com.fortysomethingnerd.android.termtracker.utilities.CourseStatus;
 
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
@@ -41,7 +42,7 @@ public class CourseDetailViewModel extends AndroidViewModel {
     }
 
     public long saveCourse(int termId, String title, Date start, boolean isStartAlarmActive,
-                           Date end, boolean isEndAlarmActive, CourseStatus status, String mentorName, String mentorPhone, String mentorEmail) {
+                           Date end, boolean isEndAlarmActive, CourseStatus status, String mentorName, String mentorPhone, String mentorEmail) throws ExecutionException, InterruptedException {
         CourseEntity course = liveCourse.getValue();
         if (course == null) {
 

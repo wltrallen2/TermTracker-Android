@@ -9,8 +9,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +30,7 @@ import com.fortysomethingnerd.android.termtracker.components.MyReceiver;
 import com.fortysomethingnerd.android.termtracker.database.AssessmentEntity;
 import com.fortysomethingnerd.android.termtracker.database.DateConverter;
 import com.fortysomethingnerd.android.termtracker.fragments.DatePickerDialogFragment;
+import com.fortysomethingnerd.android.termtracker.utilities.AssessmentType;
 import com.fortysomethingnerd.android.termtracker.utilities.UtilityMethods;
 import com.fortysomethingnerd.android.termtracker.viewmodel.AssessmentDetailViewModel;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -57,11 +62,15 @@ import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TEM
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TEMP_GOAL_ALARM_STATE;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TEMP_GOAL_DATE;
 import static com.fortysomethingnerd.android.termtracker.utilities.Constants.TERM_ID_KEY;
+import static com.fortysomethingnerd.android.termtracker.utilities.UtilityMethods.hideKeyboard;
 
 public class AssessmentDetailActivity extends AppCompatActivity {
 
     @BindView(R.id.assessment_detail_title_text_view)
     EditText titleTextView;
+
+    @BindView(R.id.assessment_type_spinner)
+    Spinner typeSpinner;
 
     @BindView(R.id.assessment_detail_goal_text_view)
     TextView goalTextView;
@@ -102,6 +111,7 @@ public class AssessmentDetailActivity extends AppCompatActivity {
             setImageForView(dueAlarmIcon, savedInstanceState.getBoolean(TEMP_DUE_ALARM_STATE));
         }
 
+        initTypeSpinner();
         initViewModel();
     }
 
@@ -163,7 +173,7 @@ public class AssessmentDetailActivity extends AppCompatActivity {
     }
 
     public void showDatePickerDialog(int textViewId) {
-        UtilityMethods.hideKeyboard(this);
+        hideKeyboard(this);
 
         DatePickerDialogFragment dialog = new DatePickerDialogFragment();
         dialog.setTextViewId(textViewId);
@@ -195,6 +205,20 @@ public class AssessmentDetailActivity extends AppCompatActivity {
     /*******************************************************************************
      * PRIVATE HELPER METHODS - VIEW INITIALIZATION
      *******************************************************************************/
+    private void initTypeSpinner() {
+        ArrayAdapter<CharSequence> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item);
+        adapter.addAll(AssessmentType.getAssessmentTypeStrings());
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        typeSpinner.setAdapter(adapter);
+        typeSpinner.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                hideKeyboard(getApplicationContext(), v);
+                return false;
+            }
+        });
+    }
+
     private void initViewModel() {
         Observer<AssessmentEntity> observer = new Observer<AssessmentEntity>() {
             @Override
@@ -221,6 +245,13 @@ public class AssessmentDetailActivity extends AppCompatActivity {
                         setImageForView(dueAlarmIcon, false);
                         assessmentEntity.setDueAlarmActive(false);
                     }
+
+                    // Set the typeSpinner options and the selectedIndex
+                    String type = assessmentEntity.getType().toString();
+                    String[] types = AssessmentType.getAssessmentTypeStrings();
+                    int index = 0;
+                    while(index < types.length && !types[index].equals(type)) { index++; }
+                    typeSpinner.setSelection(index);
                 }
             }
         };
@@ -417,7 +448,7 @@ public class AssessmentDetailActivity extends AppCompatActivity {
      *******************************************************************************/
     private int saveAndReturn() {
         // Hide keyboard.
-        UtilityMethods.hideKeyboard(this);
+        hideKeyboard(this);
 
         // Set assessmentId to -1, so that if the saveAssessment method fails, method can return -1 as the indicator.
         int assessmentId = -1;
@@ -432,9 +463,10 @@ public class AssessmentDetailActivity extends AppCompatActivity {
             // Retrieve text from textView objects
             String title = titleTextView.getText().toString();
 
-            // Retreive booleans from alarm icons
-            boolean isGoalAlarmActive = isActiveForImageView(goalAlarmIcon);
-            boolean isDueAlarmActive = isActiveForImageView(dueAlarmIcon);
+            // Retrieve text from typeSpinner
+            int typeIndex = typeSpinner.getSelectedItemPosition();
+            String typeString = AssessmentType.getAssessmentTypeStrings()[typeIndex];
+            AssessmentType type = AssessmentType.get(typeString);
 
             // Retrieve the courseId from Bundle extras.
             Bundle extras = getIntent().getExtras();
@@ -442,11 +474,11 @@ public class AssessmentDetailActivity extends AppCompatActivity {
             String courseName = viewModel.getCourseForCourseId(courseId).getTitle();
 
             // Save the assessment.
-            assessmentId = (int) viewModel.saveAssessment(courseId, title, goalDate, isGoalAlarmActive, dueDate, isDueAlarmActive);
+            assessmentId = (int) viewModel.saveAssessment(courseId, title, type, goalDate, isGoalAlarmSet, dueDate, isDueAlarmSet);
 
             // Set alarms for goal and due dates if applicable.
-            if(isGoalAlarmActive && canSetAlarm(goalDate)) { setNotificationForGoal(assessmentId, courseName, title, goalDate); }
-            if(isDueAlarmActive && canSetAlarm(dueDate)) { setNotificationForDue(assessmentId, courseName, title, dueDate); }
+            if(isGoalAlarmSet && canSetAlarm(goalDate)) { setNotificationForGoal(assessmentId, courseName, title, goalDate); }
+            if(isDueAlarmSet && canSetAlarm(dueDate)) { setNotificationForDue(assessmentId, courseName, title, dueDate); }
 
         } catch (ParseException e) {
             Log.i(LOG_TAG, "Error in AssessmentDetailActivity.saveAndReturn: " +

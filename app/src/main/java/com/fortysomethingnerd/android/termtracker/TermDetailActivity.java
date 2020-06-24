@@ -24,6 +24,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.text.ParseException;
 import java.util.Date;
+import java.util.concurrent.ExecutionException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,8 +80,8 @@ public class TermDetailActivity extends AppCompatActivity {
         int termId = -1;
         try {
             termId = mViewModel.mLiveTerm.getValue().getId();
-        } catch (Exception e) {
-            // TODO: Handle this exception.
+        } catch (NullPointerException e) {
+            // No need to act on exception since the termId is set to -1 if the try statement fails.
             e.printStackTrace();
         }
 
@@ -135,14 +136,14 @@ public class TermDetailActivity extends AppCompatActivity {
                 mViewModel.deleteTerm();
                 finish();
             } else {
-                showErrorDialog();
+                showDeleteErrorDialog();
             }
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void showErrorDialog() {
+    private void showDeleteErrorDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(R.string.error_term_contains_classes);
         builder.setNeutralButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -156,7 +157,17 @@ public class TermDetailActivity extends AppCompatActivity {
     }
 
     private boolean isSafeToDelete() {
-        return mViewModel.isSafeToDelete();
+        boolean isSafeToDelete = false;
+
+        try {
+            isSafeToDelete = mViewModel.isSafeToDelete();
+        } catch (Exception e) {
+            // No need to handle exception because if it an exception is thrown,
+            // method will automatically return false.
+            e.printStackTrace();
+        }
+
+        return isSafeToDelete;
     }
 
     @Override
@@ -179,7 +190,8 @@ public class TermDetailActivity extends AppCompatActivity {
             termId = (int) mViewModel.saveTerm(termTitle, start, end);
             mViewModel.loadData(termId);
         } catch (ParseException e) {
-            // TODO: Handle parse error.
+            // No need to handle exception for user since the termId is set to -1 indicating failure
+            // if the try block fails.
             Log.i(LOG_TAG, "TermDetailActivity.saveAndReturn: " + e);
         }
 
@@ -216,7 +228,22 @@ public class TermDetailActivity extends AppCompatActivity {
 
             startActivity(intent);
         } else {
-            // TODO: Handle case when user has not completed term info.
+            showSegueErrorDialog();
+            // TODO: Handle this case on the other new DetailActivities as well.
         }
     }
+
+    private void showSegueErrorDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.error_complete_term_details);
+        builder.setNeutralButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
 }

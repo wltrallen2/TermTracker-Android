@@ -41,7 +41,9 @@ public class NoteDetailViewModel extends AndroidViewModel {
     public void saveNote(int courseId, String title, String text) {
         NoteEntity note = liveNote.getValue();
         if (note == null) {
-            // TODO: Handle these cases to signal user of error.
+            // TODO: For a future version, handle all saveRecord cases so that...
+            // the user is notified if a field is empty and given the chance to exit
+            // without saving or to correct their error and attempt to save again.
             if (TextUtils.isEmpty(title) || TextUtils.isEmpty(text)) { return; }
 
             note = new NoteEntity(courseId, title.trim(), text.trim());

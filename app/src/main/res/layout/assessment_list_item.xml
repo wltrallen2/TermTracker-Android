@@ -6,17 +6,33 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/assessment_title_textView"
+        android:id="@+id/assesment_type_textView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/list_text_margin_horizontal"
         android:layout_marginHorizontal="@dimen/list_text_margin_horizontal"
         android:layout_marginBottom="@dimen/list_text_margin_vertical"
+        android:text="@string/assessment_type"
+        android:textColor="@color/list_subtext_color"
+        android:textSize="@dimen/list_subtext_size"
+        android:textFontWeight="700"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/assessmentDetailFab"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/assessment_title_textView"
+        />
+
+    <TextView
+        android:id="@+id/assessment_title_textView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/list_text_margin_horizontal"
+        android:layout_marginVertical="@dimen/list_text_margin_vertical"
         android:text="@string/assessment_name"
         android:textColor="@color/list_text_color"
         android:textSize="@dimen/list_text_size"
         app:layout_constraintStart_toEndOf="@id/assessmentDetailFab"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/assesment_type_textView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/assessment_goal_textView"/>
 
